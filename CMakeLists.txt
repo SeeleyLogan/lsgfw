@@ -22,7 +22,7 @@ find_package(OpenMP REQUIRED)
 
 target_link_libraries(lsgfw PUBLIC  OpenMP::OpenMP_C glfw glad)
 
-if (WIN32)
+if (UNIX)
 	target_link_libraries(lsgfw PRIVATE m)
  endif()
 
