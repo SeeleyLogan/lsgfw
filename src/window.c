@@ -1,4 +1,4 @@
-GLFWwindow* lsgfw_quick_window(const char* title, bool share)
+LSGFW_API GLFWwindow* lsgfw_quick_window(const char* title, bool share)
 {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);

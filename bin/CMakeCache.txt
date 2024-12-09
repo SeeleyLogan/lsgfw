@@ -304,6 +304,9 @@ GLFW_LIBRARY_TYPE:STRING=
 //Value Computed by CMake
 GLFW_SOURCE_DIR:STATIC=/run/media/Data/Development/Projects/Personal/lsgfw/lib/glfw-3.4
 
+//Build LSGFW as a static import library
+LSGFW_BUILD_SHARED_LIBRARY:BOOL=ON
+
 //Build all the test projects found in ./tests
 LSGFW_BUILD_TESTS:BOOL=ON
 

@@ -1,7 +1,7 @@
 #define LSGFW_IMPLEMENTATION
 #include <LSGFW/lsgfw.h>
 
-u8_t init_lsgfw()
+LSGFW_API u8_t init_lsgfw()
 {
 	universe = (lsgfw_universe_t)
 	{
@@ -11,7 +11,7 @@ u8_t init_lsgfw()
 	return glfwInit();
 }
 
-lsgfw_universe_t* lsgfw_get_universe()
+LSGFW_API lsgfw_universe_t* lsgfw_get_universe()
 {
 	return &universe;
 }

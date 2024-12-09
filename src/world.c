@@ -1,4 +1,4 @@
-lsgfw_world_t* lsgfw_new_world(GLFWwindow* window)
+LSGFW_API lsgfw_world_t* lsgfw_new_world(GLFWwindow* window)
 {
 	if (!window)
 		return LSGFW_FAIL;
