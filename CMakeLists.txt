@@ -9,6 +9,10 @@ set(TESTS_DIR	"${CMAKE_CURRENT_SOURCE_DIR}/tests")
 set(GLFW_DIR	"${LIB_DIR}/glfw-3.4")
 set(GLAD_DIR	"${LIB_DIR}/glad")
 
+if(MSVC)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif()
+
 add_library(lsgfw SHARED "${SRC_DIR}/lsgfw.c")
 
 target_include_directories(lsgfw PUBLIC  ${INCLUDE_DIR} "${GLFW_DIR}/include" ${GLAD_DIR})
@@ -20,7 +24,7 @@ add_subdirectory(${GLAD_DIR})
 
 find_package(OpenMP REQUIRED)
 
-target_link_libraries(lsgfw PUBLIC  OpenMP::OpenMP_C glfw glad)
+target_link_libraries(lsgfw PUBLIC OpenMP::OpenMP_C glfw glad)
 
 if (UNIX)
 	target_link_libraries(lsgfw PRIVATE m)
