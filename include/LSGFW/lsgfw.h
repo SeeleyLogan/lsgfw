@@ -1,6 +1,7 @@
 #ifndef LSGFW_H
 #define LSGFW_H
 
+#define GLAD_GLAPI_EXPORT
 #include <glad.h>
 #include <GLFW/glfw3.h>
 
