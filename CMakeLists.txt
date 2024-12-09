@@ -21,7 +21,10 @@ add_subdirectory(${GLAD_DIR})
 find_package(OpenMP REQUIRED)
 
 target_link_libraries(lsgfw PUBLIC  OpenMP::OpenMP_C glfw glad)
-target_link_libraries(lsgfw PRIVATE m)
+
+if (WIN32)
+	target_link_libraries(lsgfw PRIVATE m)
+ endif()
 
 option(LSGFW_BUILD_TESTS "Build all the test projects found in ./tests" ON)
 
