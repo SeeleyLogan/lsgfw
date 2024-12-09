@@ -5,6 +5,8 @@ project(lsgfw LANGUAGES C)
 option(LSGFW_BUILD_SHARED_LIBRARY "Build LSGFW as a static import library" ON)
 option(LSGFW_BUILD_TESTS "Build all the test projects found in ./tests" ON)
 
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(SRC_DIR	"${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIB_DIR	"${CMAKE_CURRENT_SOURCE_DIR}/lib")

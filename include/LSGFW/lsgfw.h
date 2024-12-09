@@ -8,9 +8,6 @@
 
 #include <omp.h>
 
-#include <stdio.h>
-#include <stdbool.h>
-
 #ifdef LSGFW_API_EXPORT
 	#if defined(_WIN32) || defined(__CYGWIN__)
 		#ifdef LSGFW_IMPLEMENTATION
@@ -75,11 +72,15 @@ struct lsgfw_world_s
 
 LSGFW_API lsgfw_world_t* lsgfw_new_world(GLFWwindow* window);
 
+LSGFW_API void lsgfw_start_world(lsgfw_world_t* world);
+LSGFW_API void lsgfw_loop_world(lsgfw_world_t* world);
+LSGFW_API void lsgfw_end_world(lsgfw_world_t* world);
+
 // ==========
 //  window.c
 // ==========
 
-LSGFW_API GLFWwindow* lsgfw_quick_window(const char* title, bool share);
+LSGFW_API GLFWwindow* lsgfw_quick_window(const char* title);
 
 #ifdef LSGFW_IMPLEMENTATION
 

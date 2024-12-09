@@ -8,6 +8,8 @@ LSGFW_API u8_t init_lsgfw()
 		NULL
 	};
 
+	omp_set_nested(1);
+
 	return glfwInit();
 }
 

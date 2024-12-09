@@ -5,49 +5,33 @@ int main()
 	if (!init_lsgfw())
 		exit(1);
 
-	if (!lsgfw_new_world(lsgfw_quick_window("window!", false)))
+	if (!lsgfw_new_world(lsgfw_quick_window("window1!")))
 		exit(1);
 	
-	GLFWwindow* window = lsgfw_get_universe()->worlds[0].window;
+	if (!lsgfw_new_world(lsgfw_quick_window("window2!")))
+		exit(1);
 
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	lsgfw_universe_t* universe = lsgfw_get_universe();
 
-	glfwMakeContextCurrent(NULL);
-
-	#pragma omp parallel sections shared(window)
+	#pragma omp parallel sections shared(universe)
 	{
+
 		#pragma omp section
 		{
-			while(!glfwWindowShouldClose(window))
-			{
-				#pragma omp critical
-        			{
-					glfwMakeContextCurrent(window);
+			lsgfw_world_t world = universe->worlds[0];
 
-					glfwPollEvents();
-
-					glfwMakeContextCurrent(NULL);
-				}
-			}
+			lsgfw_start_world(&world);
+			lsgfw_loop_world(&world);
+			lsgfw_end_world(&world);
 		}
 
 		#pragma omp section
 		{
-			while(!glfwWindowShouldClose(window))
-			{
-				#pragma omp critical
-        			{	
-					glfwMakeContextCurrent(window);
-					
-					glClear(GL_COLOR_BUFFER_BIT);
-					
-					glfwMakeContextCurrent(NULL);
-				}
+			lsgfw_world_t world = universe->worlds[1];
 
-				// . . .
-
-				glfwSwapBuffers(window);
-			}
+			lsgfw_start_world(&world);
+			lsgfw_loop_world(&world);
+			lsgfw_end_world(&world);
 		}
 	}
 }
