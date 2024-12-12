@@ -22,8 +22,20 @@ LSGFW_API lsgfw_universe_t* lsgfw_get_universe()
 }
 
 LSGFW_API void lsgfw_end_universe()
-{
-	// todo: free all allocated memory by worlds, and their members
+{	
+	for (u32_t i = 0; i < arrlen(universe.worlds); i++)
+	{
+		lsgfw_world_t* world = &universe.worlds[i];
+		
+		lsgfw_free_scripts(i);
+		
+		arrfree(world->scripts.handles);
+		arrfree(world->scripts.Starts);
+		arrfree(world->scripts.Updates);
+		arrfree(world->scripts.Ends);
+	}
+
+	arrfree(universe.worlds);
 
 	glfwTerminate();
 }

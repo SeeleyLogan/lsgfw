@@ -64,7 +64,6 @@ LSGFW_API void lsgfw_loop_world(u32_t world_i, void (*script_cb)())
 LSGFW_API void lsgfw_end_world(u32_t world_i, void (*script_cb)())
 {
 	lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_END, script_cb);
-	lsgfw_free_scripts(world_i);
 
 	glfwDestroyWindow(universe.worlds[world_i].window);
 }

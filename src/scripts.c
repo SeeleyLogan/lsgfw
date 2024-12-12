@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 {
 	glob_t script_glob;
@@ -30,11 +28,21 @@ LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 			fail_c++;
 			continue;
 		}
+		
+		void* (*start)()  = lsgfw_get_shared_lib_func(script_handle, "Start");
+		void* (*update)() = lsgfw_get_shared_lib_func(script_handle, "Update");
+		void* (*end)()	  = lsgfw_get_shared_lib_func(script_handle, "End");
+		
+		if (!start || !update || !end)
+		{
+			fail_c++;
+			continue;
+		}
 
 		arrput(world->scripts.handles, script_handle);
-		arrput(world->scripts.Starts,  lsgfw_get_shared_lib_func(script_handle, "Start"));
-		arrput(world->scripts.Updates, lsgfw_get_shared_lib_func(script_handle, "Update"));
-		arrput(world->scripts.Ends,    lsgfw_get_shared_lib_func(script_handle, "End"));
+		arrput(world->scripts.Starts,  start);
+		arrput(world->scripts.Updates, update);
+		arrput(world->scripts.Ends,    end);
 	}
 	
 	world->scripts.script_c -= fail_c;
