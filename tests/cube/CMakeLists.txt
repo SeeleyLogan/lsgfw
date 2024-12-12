@@ -4,10 +4,17 @@ project(cube LANGUAGES C)
 
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(SRC_DIR	"${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(SCRIPTS_DIR	"${SRC_DIR}/scripts")
 
 add_executable(cube ${SRC_DIR}/main.c)
+
+set_target_properties(cube
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/src"
+)
 
 target_include_directories(cube PRIVATE ${INCLUDE_DIR} ${SRC_DIR})
 
 target_link_libraries(cube PRIVATE lsgfw)
 
+add_subdirectory("${SRC_DIR}/scripts")

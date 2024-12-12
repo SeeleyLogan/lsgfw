@@ -5,8 +5,6 @@ project(lsgfw LANGUAGES C)
 option(LSGFW_BUILD_SHARED_LIBRARY "Build LSGFW as a static import library" ON)
 option(LSGFW_BUILD_TESTS "Build all the test projects found in ./tests" ON)
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(SRC_DIR	"${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIB_DIR	"${CMAKE_CURRENT_SOURCE_DIR}/lib")
@@ -24,6 +22,11 @@ if (LSGFW_BUILD_SHARED_LIBRARY)
 else()
 	add_library(lsgfw STATIC "${SRC_DIR}/lsgfw.c")
 endif()
+
+set_target_properties(lsgfw
+    PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/src"
+)
 
 target_include_directories(lsgfw PUBLIC  ${INCLUDE_DIR} "${GLFW_DIR}/include" ${GLAD_DIR})
 target_include_directories(lsgfw PRIVATE ${SRC_DIR})

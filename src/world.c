@@ -1,36 +1,27 @@
-LSGFW_API lsgfw_world_t* lsgfw_new_world(GLFWwindow* window)
+LSGFW_API u32_t lsgfw_new_world(GLFWwindow* window)
 {
 	if (!window)
 		return LSGFW_FAIL;
 
 	lsgfw_world_t world =
 	{
-		window
+		window, NULL,
+		{ NULL, NULL, NULL, NULL, 0 }
 	};
 
 	arrput(universe.worlds, world);
 
-	return &(universe.worlds[arrlen(universe.worlds)-1]);
+	return arrlen(universe.worlds)-1;
 }
 
-LSGFW_API void lsgfw_start_world(lsgfw_world_t* world)
+LSGFW_API void lsgfw_start_world(u32_t world_i, void (*script_cb)())
 {
-	glfwShowWindow(world->window);
-
-	// test
-	#pragma omp critical
-	{
-		glfwMakeContextCurrent(world->window);
-
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
-		glfwMakeContextCurrent(NULL);
-	}
+	lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_START, script_cb);
 }
 
-LSGFW_API void lsgfw_loop_world(lsgfw_world_t* world)
+LSGFW_API void lsgfw_loop_world(u32_t world_i, void (*script_cb)())
 {
-	GLFWwindow* window = world->window;
+	GLFWwindow* window = universe.worlds[world_i].window;
 
 	#pragma omp parallel sections shared(window)
 	{
@@ -62,7 +53,7 @@ LSGFW_API void lsgfw_loop_world(lsgfw_world_t* world)
 					glfwMakeContextCurrent(NULL);
 				}
 
-				// . . .
+				lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_UPDATE, script_cb);
 
 				glfwSwapBuffers(window);
 			}
@@ -70,8 +61,11 @@ LSGFW_API void lsgfw_loop_world(lsgfw_world_t* world)
 	}
 }
 
-LSGFW_API void lsgfw_end_world(lsgfw_world_t* world)
+LSGFW_API void lsgfw_end_world(u32_t world_i, void (*script_cb)())
 {
-	glfwDestroyWindow(world->window);
+	lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_END, script_cb);
+	lsgfw_free_scripts(world_i);
+
+	glfwDestroyWindow(universe.worlds[world_i].window);
 }
 
