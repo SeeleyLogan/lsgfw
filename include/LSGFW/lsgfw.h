@@ -35,7 +35,11 @@
 #define LSGFW_REALLLOC(...)	realloc(__VA_ARGS__)
 #define LSGFW_FREE(...) 	free   (__VA_ARGS__)
 
+#define LSGFW_FALSE 	0
+#define LSGFW_TRUE 	1
+
 // you may thank me or hate me
+typedef unsigned 	char		bool_t;
 typedef unsigned 	char		u8_t;
 typedef signed		char		i8_t;
 typedef unsigned 	short		u16_t;
@@ -68,6 +72,7 @@ lsgfw_world_t;
 
 typedef struct lsgfw_univserse_s
 {
+	bool_t ending;
 	lsgfw_world_t* worlds;
 	void* global_ptr;
 }
@@ -77,7 +82,7 @@ lsgfw_universe_t;
 //  lsgfw.c
 // =========
 
-LSGFW_API lsgfw_universe_t* init_lsgfw();
+LSGFW_API u8_t init_lsgfw(void (*run_cb)(lsgfw_universe_t*), void (*init_cb)(lsgfw_universe_t*));
 
 LSGFW_API lsgfw_universe_t* lsgfw_get_universe();
 LSGFW_API void lsgfw_end_universe();

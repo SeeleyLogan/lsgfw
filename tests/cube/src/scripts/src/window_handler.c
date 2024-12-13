@@ -1,11 +1,15 @@
 #include <cube.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{	
-	// context and lock does not need to be set as it
-	// this method is called by glfwPollEvents (meaning
-	// context and lock are already set)
-	glViewport(0, 0, width, height);
+{
+	#pragma omp critical
+	{
+		glfwMakeContextCurrent(window);
+		
+		glViewport(0, 0, width, height);
+		
+		glfwMakeContextCurrent(NULL);
+	}
 }
 
 LSGFW_API void* Start(lsgfw_universe_t* universe, u32_t world_i)

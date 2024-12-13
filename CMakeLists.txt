@@ -43,7 +43,7 @@ target_link_libraries(lsgfw PUBLIC OpenMP::OpenMP_C glfw glad)
 
 if (UNIX)
 	target_link_libraries(lsgfw PRIVATE m)
- endif()
+endif()
 
 if (LSGFW_BUILD_TESTS)
 	add_subdirectory("${TESTS_DIR}/cube")
