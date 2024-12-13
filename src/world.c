@@ -1,13 +1,6 @@
-LSGFW_API u32_t lsgfw_new_world(GLFWwindow* window)
+LSGFW_API u32_t lsgfw_new_world()
 {
-	if (!window)
-		return LSGFW_FAIL;
-
-	lsgfw_world_t world =
-	{
-		window, NULL,
-		{ NULL, NULL, NULL, NULL, 0 }
-	};
+	lsgfw_world_t world = { NULL };
 
 	arrput(universe.worlds, world);
 
@@ -65,6 +58,10 @@ LSGFW_API void lsgfw_end_world(u32_t world_i, void (*script_cb)())
 {
 	lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_END, script_cb);
 
-	glfwDestroyWindow(universe.worlds[world_i].window);
+	if (universe.worlds[world_i].window)
+	{
+		glfwDestroyWindow(universe.worlds[world_i].window);
+		universe.worlds[world_i].window = NULL;
+	}
 }
 

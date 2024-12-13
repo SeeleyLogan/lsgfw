@@ -1,5 +1,5 @@
 LSGFW_API GLFWwindow* lsgfw_quick_window(const char* title)
-{
+{	
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -14,13 +14,13 @@ LSGFW_API GLFWwindow* lsgfw_quick_window(const char* title)
 
 	glfwMakeContextCurrent(window);
 
-	if (arrlen(universe.worlds) == 0 && !gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
 		return LSGFW_FAIL;
-	
+
 	glViewport(0, 0, 800, 600);
 
 	glfwMakeContextCurrent(NULL);
-
+	
 	return window;
 }
 

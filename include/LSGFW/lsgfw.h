@@ -87,7 +87,7 @@ LSGFW_API void lsgfw_end_universe();
 // =========
 
 // returns index of world in universe.worlds
-LSGFW_API u32_t lsgfw_new_world(GLFWwindow* window);
+LSGFW_API u32_t lsgfw_new_world();
 
 LSGFW_API void lsgfw_start_world(u32_t world_i, void (*script_cb)());
 LSGFW_API void lsgfw_loop_world	(u32_t world_i, void (*script_cb)());

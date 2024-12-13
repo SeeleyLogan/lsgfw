@@ -19,3 +19,4 @@ foreach(SCRIPT_SOURCE ${SCRIPTS_SOURCES})
 
 	target_link_libraries(${SCRIPT_NAME} PRIVATE lsgfw)
 endforeach()
+
