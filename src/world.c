@@ -22,14 +22,7 @@ LSGFW_API void lsgfw_loop_world(u32_t world_i, void (*script_cb)())
 		{
 			while(!glfwWindowShouldClose(window))
 			{
-				#pragma omp critical
-        			{
-					glfwMakeContextCurrent(window);
-
-					glfwPollEvents();
-
-					glfwMakeContextCurrent(NULL);
-				}
+				glfwPollEvents();
 			}
 		}
 
