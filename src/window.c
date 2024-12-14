@@ -8,17 +8,12 @@ LSGFW_API GLFWwindow* lsgfw_quick_window(const char* title)
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, title, NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(800, 600, title, NULL, universe.window);
 	if (!window)
 		return LSGFW_FAIL;
 
 	glfwMakeContextCurrent(window);
-
-	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
-		return LSGFW_FAIL;
-
 	glViewport(0, 0, 800, 600);
-
 	glfwMakeContextCurrent(NULL);
 	
 	return window;

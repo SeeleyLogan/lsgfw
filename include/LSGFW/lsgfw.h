@@ -10,7 +10,7 @@
 
 #ifdef LSGFW_API_EXPORT
 	#if defined(_WIN32) || defined(__CYGWIN__)
-		#ifdef LSGFW_IMPLEMENTATION
+		#if defined(LSGFW_IMPLEMENTATION)
 			#ifdef __GNUC__
 				#define LSGFW_API __attribute__ ((dllexport)) extern
 			#else
@@ -23,7 +23,7 @@
 				#define LSGFW_API __declspec(dllimport) extern
 			#endif
 		#endif
-	#elif defined(__GNUC__) && defined(LSGFW_API_EXPORT_BUILD)
+	#elif defined(__GNUC__) && defined(LSGFW_IMPLEMENTATION)
 		#define LSGFW_API __attribute__ ((visibility ("default"))) extern
 	#else
 		#define LSGFW_API extern
@@ -32,13 +32,24 @@
 	#define LSGFW_API extern
 #endif
 
+#ifdef LSGFW_SCRIPT
+	#if defined(_WIN32) || defined(__CYGWIN__)
+		#ifdef __GNUC__
+			#define LSGFW_EXPORT __attribute__ ((dllexport)) extern
+		#else
+			#define LSGFW_EXPORT __declspec(dllexport) extern
+		#endif
+	#elif defined(__GNUC__)
+		#define LSGFW_EXPORT __attribute__ ((visibility ("default"))) extern
+	#endif
+#endif
+
 #define LSGFW_REALLLOC(...)	realloc(__VA_ARGS__)
 #define LSGFW_FREE(...) 	free   (__VA_ARGS__)
 
 #define LSGFW_FALSE 	0
 #define LSGFW_TRUE 	1
 
-// you may thank me or hate me
 typedef unsigned 	char		bool_t;
 typedef unsigned 	char		u8_t;
 typedef signed		char		i8_t;
@@ -72,6 +83,7 @@ lsgfw_world_t;
 
 typedef struct lsgfw_univserse_s
 {
+	GLFWwindow* window;
 	bool_t ending;
 	lsgfw_world_t* worlds;
 	void* global_ptr;
@@ -82,7 +94,7 @@ lsgfw_universe_t;
 //  lsgfw.c
 // =========
 
-LSGFW_API u8_t init_lsgfw(void (*run_cb)(lsgfw_universe_t*), void (*init_cb)(lsgfw_universe_t*));
+LSGFW_API bool_t init_lsgfw(void (*run_cb)(lsgfw_universe_t*), void (*init_cb)(lsgfw_universe_t*));
 
 LSGFW_API lsgfw_universe_t* lsgfw_get_universe();
 LSGFW_API void lsgfw_end_universe();

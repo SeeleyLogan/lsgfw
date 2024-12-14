@@ -23,6 +23,8 @@ else()
 	add_library(lsgfw STATIC "${SRC_DIR}/lsgfw.c")
 endif()
 
+target_compile_definitions(lsgfw PUBLIC GLAD_GLAPI_EXPORT)
+
 set_target_properties(lsgfw
     PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/src"
@@ -31,8 +33,6 @@ set_target_properties(lsgfw
 target_include_directories(lsgfw PUBLIC  ${INCLUDE_DIR} "${GLFW_DIR}/include" ${GLAD_DIR})
 target_include_directories(lsgfw PRIVATE ${SRC_DIR})
 target_link_directories	  (lsgfw PRIVATE ${LIB_DIR})
-
-target_compile_definitions(lsgfw PUBLIC GLAD_GLAPI_EXPORT)
 
 add_subdirectory(${GLFW_DIR})
 add_subdirectory(${GLAD_DIR})

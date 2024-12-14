@@ -1,7 +1,8 @@
 #define LSGFW_IMPLEMENTATION
 #include <LSGFW/lsgfw.h>
+#include <stdio.h>
 
-LSGFW_API u8_t init_lsgfw(void (*run_cb)(lsgfw_universe_t*), void (*init_cb)(lsgfw_universe_t*))
+LSGFW_API bool_t init_lsgfw(void (*run_cb)(lsgfw_universe_t*), void (*init_cb)(lsgfw_universe_t*))
 {
 	universe = (lsgfw_universe_t) { 0 };
 
@@ -9,6 +10,14 @@ LSGFW_API u8_t init_lsgfw(void (*run_cb)(lsgfw_universe_t*), void (*init_cb)(lsg
 
 	if (!glfwInit())
 		return LSGFW_FAIL;
+
+	glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+	universe.window = glfwCreateWindow(1, 1, "botnet.exe", NULL, NULL);
+
+	glfwMakeContextCurrent(universe.window);
+	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+		return LSGFW_FAIL;
+	glfwMakeContextCurrent(NULL);
 
 	init_cb(&universe);
 

@@ -1,4 +1,5 @@
 #include <cube.h>
+#include <stdio.h>
 
 u32_t world_i;
 
@@ -7,7 +8,7 @@ void run_cb(lsgfw_universe_t* universe);
 
 int main()
 {
-	init_lsgfw(run_cb, init_cb);	
+	return !init_lsgfw(run_cb, init_cb);  // logical not because fail = 0 and succes = 1
 }
 
 void init_cb(lsgfw_universe_t* universe)
