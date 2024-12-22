@@ -1,6 +1,5 @@
 #define LSGFW_IMPLEMENTATION
 #include <LSGFW/lsgfw.h>
-#include <stdio.h>
 
 LSGFW_API bool_t init_lsgfw(void (*run_cb)(lsgfw_universe_t*), void (*init_cb)(lsgfw_universe_t*))
 {
@@ -26,9 +25,7 @@ LSGFW_API bool_t init_lsgfw(void (*run_cb)(lsgfw_universe_t*), void (*init_cb)(l
 		#pragma omp parallel master
 		{
 			while(!universe.ending)
-			{
 				glfwPollEvents();
-			}
 
 			glfwTerminate();
 		}
@@ -49,19 +46,19 @@ LSGFW_API lsgfw_universe_t* lsgfw_get_universe()
 
 LSGFW_API void lsgfw_end_universe()
 {	
-	for (u32_t i = 0; i < arrlen(universe.worlds); i++)
+	for (u32_t i = 0; i < arrlen(universe.world_v); i++)
 	{
-		lsgfw_world_t* world = &universe.worlds[i];
+		lsgfw_world_t* world = &universe.world_v[i];
 		
 		lsgfw_free_scripts(i);
 		
-		arrfree(world->scripts.handles);
-		arrfree(world->scripts.Starts);
-		arrfree(world->scripts.Updates);
-		arrfree(world->scripts.Ends);
+		arrfree(world->scripts.handle_v);
+		arrfree(world->scripts.Start_v);
+		arrfree(world->scripts.Update_v);
+		arrfree(world->scripts.End_v);
 	}
 
-	arrfree(universe.worlds);
+	arrfree(universe.world_v);
 
 	universe.ending = LSGFW_TRUE;
 }

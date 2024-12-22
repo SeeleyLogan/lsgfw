@@ -14,12 +14,16 @@ int main()
 void init_cb(lsgfw_universe_t* universe)
 {
 	world_i = lsgfw_new_world();	
-	universe->worlds[world_i].window = lsgfw_quick_window("window!");
+	universe->world_v[world_i].window = lsgfw_quick_window("window!");
 }
 
 void run_cb(lsgfw_universe_t* universe)
 {
-	lsgfw_attach_scripts(world_i, "./scripts/");
+#if defined(_WIN32) || defined(__CYGWIN__)
+
+#else
+	lsgfw_attach_scripts(world_i, "./scripts/", "*.so");
+#endif
 
 	lsgfw_start_world(world_i, NULL);
 	lsgfw_loop_world (world_i, NULL);

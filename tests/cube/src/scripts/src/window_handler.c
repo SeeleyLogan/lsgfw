@@ -1,12 +1,14 @@
 #include <cube.h>
 
+lsgfw_world_t* world;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	#pragma omp critical
 	{
 		glfwMakeContextCurrent(window);
-		
-		glViewport(0, 0, width, height);
+
+		glViewport(0, 0, width, height);	
 		
 		glfwMakeContextCurrent(NULL);
 	}
@@ -14,7 +16,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 {
-	lsgfw_world_t* world = &universe->worlds[world_i];
+	world = &universe->world_v[world_i];
 	
 	#pragma omp critical
 	{
@@ -32,9 +34,7 @@ LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 }
 
 LSGFW_EXPORT void* Update(lsgfw_universe_t* universe, u32_t world_i)
-{
-	lsgfw_world_t* world = &universe->worlds[world_i];
-	
+{	
 	if (glfwGetKey(world->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(world->window, GLFW_TRUE);
 

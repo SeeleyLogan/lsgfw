@@ -20,9 +20,3 @@ target_link_libraries(cube PRIVATE lsgfw)
 
 add_subdirectory("${SRC_DIR}/scripts")
 
-file(GLOB_RECURSE SHADER_SOURCES "${ASSETS_DIR}/*.glsl")
-
-foreach(SHADER_SOURCE ${SHADER_SOURCES})
-	configure_file(${SHADER_SOURCE} "${CMAKE_CURRENT_BINARY_DIR}/src/assets" COPYONLY)
-endforeach()
-
