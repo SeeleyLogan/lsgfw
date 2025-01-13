@@ -16,7 +16,7 @@ void framebuffer_size_cb(GLFWwindow* window, int _width, int _height)
 LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 {
 	lsgfw_world_t* world = &universe->world_v[world_i];
-	
+
 	#pragma omp critical
 	{
 		glfwMakeContextCurrent(world->window);
