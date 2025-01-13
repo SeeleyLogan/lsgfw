@@ -13,7 +13,13 @@ LSGFW_API GLFWwindow* lsgfw_quick_window(const char* title)
 		return LSGFW_FAIL;
 
 	glfwMakeContextCurrent(window);
+	
 	glViewport(0, 0, 800, 600);
+
+	GLuint VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	
 	glfwMakeContextCurrent(NULL);
 	
 	return window;
