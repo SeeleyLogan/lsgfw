@@ -24,7 +24,12 @@ LSGFW_API void lsgfw_loop_world(u32_t world_i, void (*script_cb)())
 
 		lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_UPDATE, script_cb);
 
-		glfwSwapBuffers(window);
+		#pragma omp critical
+		{
+			glfwMakeContextCurrent(window);
+			glfwSwapBuffers(window);
+			glfwMakeContextCurrent(NULL);
+		}
 	}
 }
 

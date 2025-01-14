@@ -1,6 +1,5 @@
 #include <cube.h>
 
-#include <stdio.h>
 u32_t world_i;
 
 void run_cb(lsgfw_universe_t* universe);
@@ -17,7 +16,6 @@ int main()
 	
 	run_lsgfw(run_cb);
 }
-
 
 void run_cb(lsgfw_universe_t* universe)
 {

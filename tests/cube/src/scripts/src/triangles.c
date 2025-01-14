@@ -3,12 +3,19 @@
 
 float vertices[] =
 {
-    -0.5f, -0.5f, 0.0f, 1.0f,
-     0.5f, -0.5f, 0.0f, 1.0f,
-     0.0f,  0.5f, 0.0f, 1.0f
+	 0.5f,  0.5f, 0.0f, 1.0f,
+	 0.5f, -0.5f, 0.0f, 1.0f,
+	-0.5f,  0.5f, 0.0f, 1.0f,
+	-0.5f, -0.5f, 0.0f, 1.0f
 };
 
-GLuint ssbo;
+u32_t indices[] =
+{
+	0, 1, 2,
+	3, 2, 1
+};
+
+GLuint ssbos[2] = { 0 };
 
 GLuint shader_program = 0;
 
@@ -23,13 +30,17 @@ LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 	{
 		glfwMakeContextCurrent(universe->window);
 		
-		glGenBuffers(1, &ssbo);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
+		glGenBuffers(2, ssbos);
+
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbos[0]);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbos[1]);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(indices),  indices,  GL_STATIC_DRAW);
 
 		glfwMakeContextCurrent(NULL);
 	}
-	
+
 	char* vertex_source   = load_file_source("./assets/shaders/test/vertex.glsl");
 	char* fragment_source = load_file_source("./assets/shaders/test/fragment.glsl");
 
@@ -38,7 +49,7 @@ LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 
 	#pragma omp critical
 	{
-		glfwMakeContextCurrent(world->window);
+		glfwMakeContextCurrent(universe->window);
 
 		GLuint vertex_shader   = glCreateShader(GL_VERTEX_SHADER);
 		GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -67,29 +78,24 @@ LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 	return NULL;
 }
 
-unsigned long long i = 0;
-
 LSGFW_EXPORT void* Update(lsgfw_universe_t* universe, u32_t world_i)
 {
 	lsgfw_world_t* world = &universe->world_v[world_i];
-
+	
 	#pragma omp critical
 	{
 		glfwMakeContextCurrent(world->window);
 			
 		glUseProgram(shader_program);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-		glfwSwapBuffers(world->window);
 		
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbos[0]);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbos[1]);
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glDrawArrays(GL_TRIANGLES, 0, sizeof(indices)/sizeof(u32_t));
+
 		glfwMakeContextCurrent(NULL);
 	}
-
-	if (i % 100 == 0)
-		printf("%d\n", i);
-	
-	i++;
 
 	return NULL;
 }
