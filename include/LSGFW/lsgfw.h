@@ -4,7 +4,8 @@
 #include <glad.h>
 #include <GLFW/glfw3.h>
 
-#include <stb/stb_ds.h>  // love you Sean
+#include <stb/stb_ds.h>  // use it
+#include <cglm/cglm.h>
 
 #include <omp.h>
 

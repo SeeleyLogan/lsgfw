@@ -19,7 +19,7 @@ LSGFW_API void lsgfw_loop_world(u32_t world_i, void (*script_cb)())
 	while(!glfwWindowShouldClose(window))
 	{
 		glfwMakeContextCurrent(window);
-		glClear(GL_COLOR_BUFFER_BIT);			
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			
 		glfwMakeContextCurrent(NULL);
 
 		lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_UPDATE, script_cb);

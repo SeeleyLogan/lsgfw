@@ -10,9 +10,10 @@ layout(std430, binding = 1) buffer index_data
     uint indices[];
 };
 
+uniform mat4 vp;
 
 void main()
 {
-    gl_Position = vertices[indices[gl_VertexID]];
+    gl_Position = vp * vertices[indices[gl_VertexID]];
 }
 
