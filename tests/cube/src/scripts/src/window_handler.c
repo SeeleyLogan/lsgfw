@@ -36,6 +36,7 @@ LSGFW_EXPORT void* Update(lsgfw_universe_t* universe, u32_t world_i)
 {
 	lsgfw_world_t* world = &universe->world_v[world_i];
 	
+	// viewport resizing on window resize
 	if (resize_pending)
 	{
 		resize_pending = LSGFW_FALSE;

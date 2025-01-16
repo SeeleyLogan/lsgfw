@@ -10,14 +10,14 @@ char* load_file_source(char* file_name);
 
 float vertices[] =
 {
-	 0.5f,  0.5f,  0.5f, 1.0f, 0.0, 0.0, 1.0, 1.0,
-	 0.5f, -0.5f,  0.5f, 1.0f, 0.0, 1.0, 0.0, 1.0,
-	-0.5f,  0.5f,  0.5f, 1.0f, 0.0, 1.0, 1.0, 1.0,
-	-0.5f, -0.5f,  0.5f, 1.0f, 1.0, 0.0, 0.0, 1.0,
-	 0.5f,  0.5f, -0.5f, 1.0f, 1.0, 0.0, 1.0, 1.0,
-	 0.5f, -0.5f, -0.5f, 1.0f, 1.0, 1.0, 0.0, 1.0,
-	-0.5f,  0.5f, -0.5f, 1.0f, 1.0, 1.0, 1.0, 1.0,
-	-0.5f, -0.5f, -0.5f, 1.0f, 0.0, 0.0, 0.0, 1.0
+	 0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f
 
 };
 
@@ -101,9 +101,6 @@ LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 	free_file_source(vertex_source);
 	free_file_source(fragment_source);
 	
-	// matricies
-	
-
 	return NULL;
 }
 
@@ -112,7 +109,8 @@ float r = 0;
 LSGFW_EXPORT void* Update(lsgfw_universe_t* universe, u32_t world_i)
 {
 	lsgfw_world_t* world = &universe->world_v[world_i];
-	
+
+	// spin camera around origin	
 	r += 0.01f;
 	camera_pos[0] = cosf(r) * 3.0f;
 	camera_pos[2] = sinf(r) * 3.0f;
@@ -120,6 +118,7 @@ LSGFW_EXPORT void* Update(lsgfw_universe_t* universe, u32_t world_i)
 	int width, height;
 	glfwGetWindowSize(world->window, &width, &height);
 
+	// update matrices
 	glm_perspective(FOV, width / (float) height, ZNEAR, ZFAR, proj);
 	glm_lookat(camera_pos, (vec3) { 0.0, 0.0, 0.0 }, (vec3) { 0.0, 1.0, 0.0 }, view);
 	glm_mat4_mul(proj, view, vp);
@@ -128,6 +127,7 @@ LSGFW_EXPORT void* Update(lsgfw_universe_t* universe, u32_t world_i)
 	{
 		glfwMakeContextCurrent(world->window);
 	
+		// draw cube
 		glUseProgram(shader_program);
 		
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbos[0]);
@@ -136,7 +136,7 @@ LSGFW_EXPORT void* Update(lsgfw_universe_t* universe, u32_t world_i)
 		int vp_loc = glGetUniformLocation(shader_program, "vp");
 		glUniformMatrix4fv(vp_loc, 1, GL_FALSE, vp[0]);
 
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // debug
 		glDrawArrays(GL_TRIANGLES, 0, sizeof(indices)/sizeof(u32_t));
 
 		glfwMakeContextCurrent(NULL);
