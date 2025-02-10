@@ -1,9 +1,12 @@
 #version 330 core
 
+in vec4 vert_color;
+in vec3 surface_normal;
+
 out vec4 frag_color;
 
 void main()
 {
-	frag_color = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	frag_color = vert_color;
 }
 
