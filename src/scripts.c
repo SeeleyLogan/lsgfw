@@ -50,7 +50,7 @@ LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 	
 	return fail_c;
 }
-#include <stdio.h>
+
 LSGFW_API void lsgfw_invoke_scripts(u32_t world_i, u8_t func_offset, void (*script_cb)(void*))
 {
 	void* (**script_funcs)(lsgfw_universe_t*, u32_t);
@@ -68,20 +68,11 @@ LSGFW_API void lsgfw_invoke_scripts(u32_t world_i, u8_t func_offset, void (*scri
 	}
 
 	if (script_cb)
-		#pragma omp parallel shared(universe)
-		{
-			#pragma omp for
-			for (u32_t i = 0; i < arrlenu(universe.world_v[world_i].scripts.handle_v); i++)
-				script_cb(script_funcs[i](&universe, world_i));
-		}
+		for (u32_t i = 0; i < arrlenu(universe.world_v[world_i].scripts.handle_v); i++)
+			script_cb(script_funcs[i](&universe, world_i));
 	else
-		#pragma omp parallel shared(universe)
-		{
-
-			#pragma omp for
-			for (u32_t i = 0; i < arrlenu(universe.world_v[world_i].scripts.handle_v); i++)	
-				script_funcs[i](&universe, world_i);
-		}
+		for (u32_t i = 0; i < arrlenu(universe.world_v[world_i].scripts.handle_v); i++)	
+			script_funcs[i](&universe, world_i);
 }
 
 LSGFW_API void lsgfw_free_scripts(u32_t world_i)

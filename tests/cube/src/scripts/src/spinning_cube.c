@@ -55,52 +55,65 @@ LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 	lsgfw_world_t* world = &universe->world_v[world_i];
 
 	// create buffers
-	#pragma omp critical
-	{
-		glfwMakeContextCurrent(universe->window);
+	glfwMakeContextCurrent(universe->window);
 		
-		glGenBuffers(2, ssbos);
+	glGenBuffers(2, ssbos);
 
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbos[0]);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbos[0]);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbos[1]);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(indices),  indices,  GL_STATIC_DRAW);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbos[1]);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(indices),  indices,  GL_STATIC_DRAW);
 
-		glfwMakeContextCurrent(NULL);
-	}
+	glfwMakeContextCurrent(NULL);
 
 	// compile shaders
 	char* vertex_source   = load_file_source("./assets/shaders/test/vertex.glsl");
 	char* fragment_source = load_file_source("./assets/shaders/test/fragment.glsl");
 
 	if (!vertex_source || !fragment_source)
-		return (void*) 0x1;
-
-	#pragma omp critical
 	{
-		glfwMakeContextCurrent(universe->window);
-
-		GLuint vertex_shader   = glCreateShader(GL_VERTEX_SHADER);
-		GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-
-		glShaderSource(vertex_shader,   1, (void*) &vertex_source,   NULL);
-		glShaderSource(fragment_shader, 1, (void*) &fragment_source, NULL);
-
-		glCompileShader(vertex_shader);
-		glCompileShader(fragment_shader);
-
-		shader_program = glCreateProgram();
-
-		glAttachShader(shader_program, vertex_shader);
-		glAttachShader(shader_program, fragment_shader);
-		glLinkProgram(shader_program);
-
-		glDeleteShader(vertex_shader);
-		glDeleteShader(fragment_shader);
-
-		glfwMakeContextCurrent(NULL);
+		printf("big bad stinky error");
+		return (void*) 0x1;
 	}
+
+	glfwMakeContextCurrent(universe->window);
+
+	GLuint vertex_shader   = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	glShaderSource(vertex_shader,   1, (void*) &vertex_source,   NULL);
+	glShaderSource(fragment_shader, 1, (void*) &fragment_source, NULL);
+
+	glCompileShader(vertex_shader);
+	glCompileShader(fragment_shader);
+
+	int  success;
+	char infoLog[512];
+	glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
+	if(!success)
+	{
+    		glGetShaderInfoLog(vertex_shader, 512, NULL, infoLog);
+		printf("%s\n", infoLog);
+	}
+
+	glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
+	if(!success)
+	{
+    		glGetShaderInfoLog(fragment_shader, 512, NULL, infoLog);
+		printf("%s\n", infoLog);
+	}
+
+	shader_program = glCreateProgram();
+
+	glAttachShader(shader_program, vertex_shader);
+	glAttachShader(shader_program, fragment_shader);
+	glLinkProgram(shader_program);
+
+	glDeleteShader(vertex_shader);
+	glDeleteShader(fragment_shader);
+
+	glfwMakeContextCurrent(NULL);
 
 	free_file_source(vertex_source);
 	free_file_source(fragment_source);
@@ -127,24 +140,21 @@ LSGFW_EXPORT void* Update(lsgfw_universe_t* universe, u32_t world_i)
 	glm_lookat(camera_pos, (vec3) { 0.0, 0.0, 0.0 }, (vec3) { 0.0, 1.0, 0.0 }, view);
 	glm_mat4_mul(proj, view, vp);
 
-	#pragma omp critical
-	{
-		glfwMakeContextCurrent(world->window);
+	glfwMakeContextCurrent(world->window);
 	
-		// draw cube
-		glUseProgram(shader_program);
+	// draw cube
+	glUseProgram(shader_program);
 		
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbos[0]);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbos[1]);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbos[0]);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbos[1]);
 		
-		int vp_loc = glGetUniformLocation(shader_program, "vp");
-		glUniformMatrix4fv(vp_loc, 1, GL_FALSE, vp[0]);
+	int vp_loc = glGetUniformLocation(shader_program, "vp");
+	glUniformMatrix4fv(vp_loc, 1, GL_FALSE, vp[0]);
 
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // debug
-		glDrawArrays(GL_TRIANGLES, 0, sizeof(indices)/sizeof(u32_t));
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // debug
+	glDrawArrays(GL_TRIANGLES, 0, sizeof(indices)/sizeof(u32_t));
 
-		glfwMakeContextCurrent(NULL);
-	}
+	glfwMakeContextCurrent(NULL);
 
 	return NULL;
 }
@@ -169,6 +179,7 @@ char* load_file_source(char* file_name)
 	char* source = NULL;
 	arrsetlen(source, f_len);
 	fread(source, sizeof(char), f_len, f);
+	source[f_len] = 0;
 
 	fclose(f);
 
