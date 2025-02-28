@@ -19,7 +19,7 @@ LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 
 	lsgfw_world_t* world = &universe.world_v[world_i];
 	
-	u32_t fail_c = 0;
+	u32_t fail_c = 0;	
 	for (int i = 0; i < arrlenu(script_glob); i++)
 	{
 		void* script_handle = lsgfw_get_shared_lib_handle(script_glob[i]);

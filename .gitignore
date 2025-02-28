@@ -1,1 +1,5 @@
 bin/
+build/
+dependencies/glfw/
+dependencies/libglfw.a
+.vscode/

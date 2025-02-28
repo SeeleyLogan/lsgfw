@@ -1,5 +1,5 @@
 #define LSGFW_IMPLEMENTATION
-#include <LSGFW/lsgfw.h>
+#include <lsgfw.h>
 
 LSGFW_API bool_t init_lsgfw()
 {
@@ -11,7 +11,7 @@ LSGFW_API bool_t init_lsgfw()
 		return LSGFW_FAIL;
 
 	glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-	universe.window = glfwCreateWindow(1, 1, "botnet.exe", NULL, NULL);
+	universe.window = glfwCreateWindow(1, 1, "lsgfw_universe_window", NULL, NULL);
 
 	glfwMakeContextCurrent(universe.window);
 
