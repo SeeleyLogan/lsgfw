@@ -41,7 +41,8 @@ u32_t indices[] =
 };
 
 GLuint ssbos[2] = { 0 };
-GLuint shader_program = 0;
+GLuint shader_program;
+GLuint VAO;
 
 vec3 camera_pos = { 3.0, 1.0, 3.0 };
 
@@ -49,7 +50,19 @@ mat4 view = GLM_MAT4_IDENTITY_INIT;
 mat4 proj = GLM_MAT4_IDENTITY_INIT;
 mat4 vp   = GLM_MAT4_IDENTITY_INIT;
 
-LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
+LSGFW_EXPORT void Install(lsgfw_universe_t* universe, u32_t world_i)
+{
+	lsgfw_world_t* world = &universe->world_v[world_i];
+
+	glfwMakeContextCurrent(world->window);
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	glfwMakeContextCurrent(NULL);
+}
+
+LSGFW_EXPORT void Start(lsgfw_universe_t* universe, u32_t world_i)
 {
 	lsgfw_world_t* world = &universe->world_v[world_i];
 
@@ -71,7 +84,7 @@ LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 	if (!vertex_source || !fragment_source)
 	{
 		printf("big bad stinky error (shader source didnt load)");
-		return NULL;
+		return;
 	}
 
 	GLuint vertex_shader   = glCreateShader(GL_VERTEX_SHADER);
@@ -82,22 +95,6 @@ LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 
 	glCompileShader(vertex_shader);
 	glCompileShader(fragment_shader);
-
-	int  success;
-	char infoLog[512];
-	glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-	if(!success)
-	{
-    		glGetShaderInfoLog(vertex_shader, 512, NULL, infoLog);
-		printf("%s\n", infoLog);
-	}
-
-	glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
-	if(!success)
-	{
-    		glGetShaderInfoLog(fragment_shader, 512, NULL, infoLog);
-		printf("%s\n", infoLog);
-	}
 
 	shader_program = glCreateProgram();
 
@@ -112,13 +109,11 @@ LSGFW_EXPORT void* Start(lsgfw_universe_t* universe, u32_t world_i)
 	free_file_source(fragment_source);
 
 	glfwMakeContextCurrent(NULL);
-
-	return NULL;
 }
 
 float r = 0;
 
-LSGFW_EXPORT void* Update(lsgfw_universe_t* universe, u32_t world_i)
+LSGFW_EXPORT void Update(lsgfw_universe_t* universe, u32_t world_i)
 {
 	lsgfw_world_t* world = &universe->world_v[world_i];
 
@@ -150,15 +145,6 @@ LSGFW_EXPORT void* Update(lsgfw_universe_t* universe, u32_t world_i)
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(indices)/sizeof(u32_t));
 
 	glfwMakeContextCurrent(NULL);
-
-	return NULL;
-}
-
-LSGFW_EXPORT void* End(lsgfw_universe_t* universe, u32_t world_i)
-{
-	lsgfw_world_t* world = &universe->world_v[world_i];
-	
-	return NULL;
 }
 
 

@@ -10,7 +10,7 @@
 #include <omp.h>
 
 #ifdef LSGFW_SCRIPT
-	#if defined(_WIN32) || defined(__CYGWIN__)
+	#if defined(_WIN32)
 		#ifdef __GNUC__
 			#define LSGFW_EXPORT __attribute__ ((dllexport)) extern
 		#else
@@ -20,7 +20,7 @@
 		#define LSGFW_EXPORT __attribute__ ((visibility ("default"))) extern
 	#endif
 #else
-	#if defined(_WIN32) || defined(__CYGWIN__)
+	#if defined(_WIN32)
 		#if defined(LSGFW_IMPLEMENTATION)
 			#ifdef __GNUC__
 				#define LSGFW_API __attribute__ ((dllexport)) extern
@@ -64,26 +64,27 @@ typedef struct lsgfw_world_s lsgfw_world_t;
 
 typedef struct lsgfw_univserse_s
 {
-	GLFWwindow* window;
+	GLFWwindow*	   window;
 	lsgfw_world_t* world_v;
-	void* global_ptr;
-	bool_t ending;
+	void* 		   global_ptr;
+	bool_t 		   ending;
 }
 lsgfw_universe_t;
 
 typedef struct lsgfw_scripts_s
 {
-	void** handle_v;
-	void*  (**Start_v) (lsgfw_universe_t*, u32_t);
-	void*  (**Update_v)(lsgfw_universe_t*, u32_t);
-	void*  (**End_v)   (lsgfw_universe_t*, u32_t);
+	void** 	handle_v;
+	void  	(**Install_v)(lsgfw_universe_t*, u32_t);
+	void  	(**Start_v)  (lsgfw_universe_t*, u32_t);
+	void  	(**Update_v) (lsgfw_universe_t*, u32_t);
+	void  	(**End_v)    (lsgfw_universe_t*, u32_t);
 }
 lsgfw_scripts_t;
 
 struct lsgfw_world_s
 {
-	GLFWwindow* window;
-	void* global_ptr;
+	GLFWwindow* 	window;
+	void* 			global_ptr;
 	lsgfw_scripts_t scripts;
 };
 
@@ -95,18 +96,18 @@ typedef char** lsgfw_glob_t;
 //  lsgfw.c
 // =========
 
-LSGFW_API bool_t init_lsgfw();
-LSGFW_API void run_lsgfw(void (*run_cb)(lsgfw_universe_t*));
+LSGFW_API bool_t 			init_lsgfw();
+LSGFW_API void 				run_lsgfw(void (*run_cb)());
 
 LSGFW_API lsgfw_universe_t* lsgfw_get_universe();
-LSGFW_API void lsgfw_end_universe();
+LSGFW_API void 				lsgfw_end_universe();
 
 // ========
 //  util.c
 // ========
 
-LSGFW_API u8_t lsgfw_glob(lsgfw_glob_t* glob, const char* glob_path, const char* pattern);
-LSGFW_API void lsgfw_free_glob (lsgfw_glob_t glob);
+LSGFW_API u8_t lsgfw_glob	  (lsgfw_glob_t* glob, const char* glob_path, const char* pattern);
+LSGFW_API void lsgfw_free_glob(lsgfw_glob_t glob);
 
 // =========
 //  world.c
@@ -115,9 +116,9 @@ LSGFW_API void lsgfw_free_glob (lsgfw_glob_t glob);
 // returns index of world in universe.worlds
 LSGFW_API u32_t lsgfw_new_world();
 
-LSGFW_API void lsgfw_start_world(u32_t world_i, void (*script_cb)());
-LSGFW_API void lsgfw_loop_world	(u32_t world_i, void (*script_cb)());
-LSGFW_API void lsgfw_end_world	(u32_t world_i, void (*script_cb)());
+LSGFW_API void lsgfw_start_world(u32_t world_i);
+LSGFW_API void lsgfw_loop_world	(u32_t world_i);
+LSGFW_API void lsgfw_end_world	(u32_t world_i);
 
 // ==========
 //  window.c
@@ -129,20 +130,19 @@ LSGFW_API GLFWwindow* lsgfw_quick_window(const char* title);
 //  scripts.c
 // ===========
 
-#define LSGFW_ATTACH_GLOB_FAILED 	-1
-#define LSGFW_NO_SCRIPTS 		-2
-
-#define LSGFW_SCRIPT_START 	0
-#define LSGFW_SCRIPT_UPDATE 	1
-#define LSGFW_SCRIPT_END	2
+#define LSGFW_ATTACH_GLOB_FAILED -1
+#define LSGFW_NO_SCRIPTS 		 -2
+#define LSGFW_SCRIPT_INSTALL 	  0
+#define LSGFW_SCRIPT_START 		  1
+#define LSGFW_SCRIPT_UPDATE 	  2
+#define LSGFW_SCRIPT_END		  3
 
 // Errors:
 // 	negative: error code
 // 	positive: amount of scripts that failed to attach
 LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path);
-
-LSGFW_API void lsgfw_invoke_scripts(u32_t world_i, u8_t func_offset, void (*script_cb)(void*));
-LSGFW_API void lsgfw_free_scripts  (u32_t world_i);
+LSGFW_API void 	lsgfw_invoke_scripts(u32_t world_i, u8_t func_offset);
+LSGFW_API void 	lsgfw_free_scripts	(u32_t world_i);
 
 // ==============
 //  shared_lib.c
@@ -159,7 +159,7 @@ LSGFW_API void  lsgfw_close_shared_lib	   (void* handle);
 #define STB_DS_IMPLEMENTATION
 #include <stb/stb_ds.h>
 
-#if defined (_WIN32) || defined(__CYGWIN__)
+#if defined (_WIN32)
 	#include <windows.h>
 #else
 	#include <dlfcn.h>

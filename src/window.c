@@ -15,10 +15,6 @@ LSGFW_API GLFWwindow* lsgfw_quick_window(const char* title)
 	glfwMakeContextCurrent(window);
 	
 	glViewport(0, 0, 800, 600);
-
-	GLuint VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
 	
 	glEnable(GL_DEPTH_TEST);
 	

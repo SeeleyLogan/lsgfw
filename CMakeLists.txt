@@ -3,12 +3,13 @@ cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(lsgfw LANGUAGES C)
 
 option(LSGFW_BUILD_TESTS "Build all the test projects found in ./tests" ON)
-option(LSGFW_BUILD_ESSENTIALS "Build essential plugins" ON)
+option(LSGFW_BUILD_ESSENTIALS "Build essential scripts" ON)
 
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(SRC_DIR		"${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(DEP_DIR		"${CMAKE_CURRENT_SOURCE_DIR}/dependencies")
 set(TESTS_DIR	"${CMAKE_CURRENT_SOURCE_DIR}/tests")
+set(ESS_DIR		"${CMAKE_CURRENT_SOURCE_DIR}/essentials")
 
 if(MSVC)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
@@ -32,3 +33,8 @@ endif()
 if (LSGFW_BUILD_TESTS)
 	add_subdirectory("${TESTS_DIR}/cube")
 endif()
+
+if (LSGFW_BUILD_ESSENTIALS)
+	add_subdirectory("${ESS_DIR}/lsgfw_global_sharing")
+endif()
+

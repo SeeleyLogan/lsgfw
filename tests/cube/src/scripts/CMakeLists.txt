@@ -12,7 +12,6 @@ foreach(SCRIPT_SOURCE ${SCRIPTS_SOURCES})
 
 	add_library(${SCRIPT_NAME} SHARED ${SCRIPT_SOURCE})
 	
-	target_compile_definitions(${SCRIPT_NAME} PRIVATE LSGFW_API_EXPORT)
 	target_compile_definitions(${SCRIPT_NAME} PRIVATE LSGFW_SCRIPT)
 
 	target_include_directories(${SCRIPT_NAME} PRIVATE ${INCLUDE_DIR})

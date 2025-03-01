@@ -16,4 +16,4 @@ target_include_directories(cube PRIVATE ${INCLUDE_DIR})
 
 target_link_libraries(cube PRIVATE lsgfw)
 
-add_subdirectory("${SRC_DIR}/plugins")
+add_subdirectory("${SRC_DIR}/scripts")

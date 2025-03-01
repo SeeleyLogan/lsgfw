@@ -2,7 +2,7 @@ LSGFW_API u8_t lsgfw_glob(lsgfw_glob_t* glob, const char* glob_path, const char*
 {
 	u32_t glob_path_len = strlen(glob_path);
 
-#if defined(_WIN32) || defined(__CYGWIN__)
+#if defined(_WIN32)
 
 #else
 	char* path_pattern = NULL;

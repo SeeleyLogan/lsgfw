@@ -18,16 +18,12 @@ LSGFW_API bool_t init_lsgfw()
 	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
 		return LSGFW_FAIL;
 
-	GLuint VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
 	glfwMakeContextCurrent(NULL);
 
 	return LSGFW_SUCCESS;
 }
 
-LSGFW_API void run_lsgfw(void (*run_cb)(lsgfw_universe_t*))
+LSGFW_API void run_lsgfw(void (*run_cb)())
 {
 	#pragma omp parallel sections shared(universe)
 	{
@@ -41,7 +37,7 @@ LSGFW_API void run_lsgfw(void (*run_cb)(lsgfw_universe_t*))
 
 		#pragma omp section
 		{
-			run_cb(&universe);
+			run_cb();
 		}
 	}
 }

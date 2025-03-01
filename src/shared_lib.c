@@ -1,6 +1,6 @@
 LSGFW_API void* lsgfw_get_shared_lib_handle(const char* file_path)
 {
-#if defined(_WIN32) || defined(__CYGWIN__)
+#if defined(_WIN32)
 	HINSTANCE handle = LoadLibrary(file_path);	
 #else
 	void* handle = dlopen(file_path, RTLD_NOW);
@@ -14,7 +14,7 @@ LSGFW_API void* lsgfw_get_shared_lib_handle(const char* file_path)
 
 LSGFW_API void* lsgfw_get_shared_lib_func(void* handle, const char* func_name)
 {
-#if defined(_WIN32) || defined(__CYGWIN__)
+#if defined(_WIN32)
 	void (*func_addr)() = (void*) GetProcAddress(handle, func_name);
 #else
 	void (*func_addr)() = dlsym(handle, func_name);
@@ -25,7 +25,7 @@ LSGFW_API void* lsgfw_get_shared_lib_func(void* handle, const char* func_name)
 
 LSGFW_API void lsgfw_close_shared_lib(void* handle)
 {
-#if defined(_WIN32) || defined(__CYGWIN__)
+#if defined(_WIN32)
 	FreeLibrary(handle);
 #else
 	dlclose(handle);

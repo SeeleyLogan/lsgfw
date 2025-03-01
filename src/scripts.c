@@ -2,7 +2,7 @@ LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 {
 	lsgfw_glob_t script_glob = NULL;
 
-	#if defined(__WIN32) || defined(__CYGWIN__)
+	#if defined(__WIN32)
 
 	if (!lsgfw_glob(&script_glob, path, "*.dll"))
 		return LSGFW_ATTACH_GLOB_FAILED;
@@ -30,20 +30,21 @@ LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 			continue;
 		}
 		
-		void* (*start)()  = lsgfw_get_shared_lib_func(script_handle, "Start");
-		void* (*update)() = lsgfw_get_shared_lib_func(script_handle, "Update");
-		void* (*end)()	  = lsgfw_get_shared_lib_func(script_handle, "End");
-		
-		if (!start || !update || !end)
-		{
-			fail_c++;
-			continue;
-		}
+		void (*Install)	(lsgfw_universe_t*, u32_t)	= lsgfw_get_shared_lib_func(script_handle, "Install");
+		void (*Start)	(lsgfw_universe_t*, u32_t)	= lsgfw_get_shared_lib_func(script_handle, "Start");
+		void (*Update)	(lsgfw_universe_t*, u32_t)	= lsgfw_get_shared_lib_func(script_handle, "Update");
+		void (*End)		(lsgfw_universe_t*, u32_t)	= lsgfw_get_shared_lib_func(script_handle, "End");
 
 		arrput(world->scripts.handle_v, script_handle);
-		arrput(world->scripts.Start_v,  start);
-		arrput(world->scripts.Update_v, update);
-		arrput(world->scripts.End_v,    end);
+
+		if (Install)
+			Install(&universe, world_i);
+		if (Start)
+			arrput(world->scripts.Start_v,  Start);
+		if (Update)
+			arrput(world->scripts.Update_v, Update);
+		if (End)
+			arrput(world->scripts.End_v,    End);
 	}
 	
 	lsgfw_free_glob(script_glob);
@@ -51,12 +52,15 @@ LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 	return fail_c;
 }
 
-LSGFW_API void lsgfw_invoke_scripts(u32_t world_i, u8_t func_offset, void (*script_cb)(void*))
+LSGFW_API void lsgfw_invoke_scripts(u32_t world_i, u8_t func_offset)
 {
-	void* (**script_funcs)(lsgfw_universe_t*, u32_t);
+	void (**script_funcs)(lsgfw_universe_t*, u32_t);
 
 	switch (func_offset)
 	{
+		case LSGFW_SCRIPT_INSTALL:
+			script_funcs = universe.world_v[world_i].scripts.Install_v;
+			break;
 		case LSGFW_SCRIPT_START:
 			script_funcs = universe.world_v[world_i].scripts.Start_v;
 			break;
@@ -67,12 +71,8 @@ LSGFW_API void lsgfw_invoke_scripts(u32_t world_i, u8_t func_offset, void (*scri
 			script_funcs = universe.world_v[world_i].scripts.End_v;
 	}
 
-	if (script_cb)
-		for (u32_t i = 0; i < arrlenu(universe.world_v[world_i].scripts.handle_v); i++)
-			script_cb(script_funcs[i](&universe, world_i));
-	else
-		for (u32_t i = 0; i < arrlenu(universe.world_v[world_i].scripts.handle_v); i++)	
-			script_funcs[i](&universe, world_i);
+	for (u32_t i = 0; i < arrlenu(script_funcs); i++)	
+		script_funcs[i](&universe, world_i);
 }
 
 LSGFW_API void lsgfw_free_scripts(u32_t world_i)
