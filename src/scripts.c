@@ -38,13 +38,13 @@ LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 		arrput(world->scripts.handle_v, script_handle);
 
 		if (Install)
-			Install(&universe, world_i);
+			arrput(world->scripts.Install_v,Install);
 		if (Start)
-			arrput(world->scripts.Start_v,  Start);
+			arrput(world->scripts.Start_v,  	Start);
 		if (Update)
-			arrput(world->scripts.Update_v, Update);
+			arrput(world->scripts.Update_v, 	Update);
 		if (End)
-			arrput(world->scripts.End_v,    End);
+			arrput(world->scripts.End_v,    	End);
 	}
 	
 	lsgfw_free_glob(script_glob);

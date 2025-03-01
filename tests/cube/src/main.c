@@ -18,9 +18,12 @@ int main()
 
 void run_cb()
 {
-	lsgfw_start_world(world_i);
-	lsgfw_loop_world (world_i);
-	lsgfw_end_world  (world_i);
+	for (int i = 0; i < 2; i++)
+	{
+		lsgfw_start_world(world_i);
+		lsgfw_loop_world (world_i);
+		lsgfw_end_world  (world_i);
+	}
 
 	lsgfw_end_universe();
 }
