@@ -66,7 +66,7 @@ typedef struct lsgfw_univserse_s
 {
 	GLFWwindow*	   window;
 	lsgfw_world_t* world_v;
-	void* 		   global_ptr;
+	void* 		   global;
 	bool_t 		   ending;
 }
 lsgfw_universe_t;
@@ -84,7 +84,7 @@ lsgfw_scripts_t;
 struct lsgfw_world_s
 {
 	GLFWwindow* 	window;
-	void* 			global_ptr;
+	void* 			global;
 	lsgfw_scripts_t scripts;
 };
 
