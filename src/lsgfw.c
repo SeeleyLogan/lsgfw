@@ -18,6 +18,9 @@ LSGFW_API bool_t init_lsgfw()
 	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
 		return LSGFW_FAIL;
 
+	glGenVertexArrays(1, &universe.VAO);
+	glBindVertexArray(universe.VAO);
+
 	glfwMakeContextCurrent(NULL);
 
 	return LSGFW_SUCCESS;

@@ -12,12 +12,12 @@
 #ifdef LSGFW_SCRIPT
 	#if defined(_WIN32)
 		#ifdef __GNUC__
-			#define LSGFW_EXPORT __attribute__ ((dllexport)) extern
+			#define LSGFW_API __attribute__ ((dllexport)) extern
 		#else
-			#define LSGFW_EXPORT __declspec(dllexport) extern
+			#define LSGFW_API __declspec(dllexport) extern
 		#endif
 	#elif defined(__GNUC__)
-		#define LSGFW_EXPORT __attribute__ ((visibility ("default"))) extern
+		#define LSGFW_API __attribute__ ((visibility ("default"))) extern
 	#endif
 #else
 	#if defined(_WIN32)
@@ -41,7 +41,7 @@
 	#endif
 #endif
 
-#define LSGFW_REALLLOC(...)	realloc(__VA_ARGS__)
+#define LSGFW_REALLOC(...)	realloc(__VA_ARGS__)
 #define LSGFW_FREE(...) 	free   (__VA_ARGS__)
 
 #define LSGFW_SUCCESS 	1
@@ -62,12 +62,20 @@ typedef signed		long long	i64_t;
 
 typedef struct lsgfw_world_s lsgfw_world_t;
 
+typedef struct lsgfw_kv_s
+{
+	char* key;
+	void* value;
+}
+lsgfw_kv_t;
+
 typedef struct lsgfw_univserse_s
 {
-	GLFWwindow*	   window;
-	lsgfw_world_t* world_v;
-	void* 		   global;
-	bool_t 		   ending;
+	GLFWwindow*	   	window;
+	GLuint			VAO;
+	lsgfw_world_t* 	world_v;
+	lsgfw_kv_t*		global;
+	bool_t 		   	ending;
 }
 lsgfw_universe_t;
 
@@ -84,7 +92,8 @@ lsgfw_scripts_t;
 struct lsgfw_world_s
 {
 	GLFWwindow* 	window;
-	void* 			global;
+	GLuint			VAO;
+	lsgfw_kv_t*		global;
 	lsgfw_scripts_t scripts;
 };
 

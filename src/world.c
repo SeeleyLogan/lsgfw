@@ -9,6 +9,7 @@ LSGFW_API u32_t lsgfw_new_world()
 
 LSGFW_API void lsgfw_start_world(u32_t world_i)
 {
+	lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_INSTALL);
 	lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_START);
 }
 

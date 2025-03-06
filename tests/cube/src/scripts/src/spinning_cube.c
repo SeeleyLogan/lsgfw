@@ -42,7 +42,6 @@ u32_t indices[] =
 
 GLuint ssbos[2] = { 0 };
 GLuint shader_program;
-GLuint VAO;
 
 vec3 camera_pos = { 3.0, 1.0, 3.0 };
 
@@ -50,25 +49,25 @@ mat4 view = GLM_MAT4_IDENTITY_INIT;
 mat4 proj = GLM_MAT4_IDENTITY_INIT;
 mat4 vp   = GLM_MAT4_IDENTITY_INIT;
 
-LSGFW_EXPORT void Install(lsgfw_universe_t* universe, u32_t world_i)
+LSGFW_API void Install(lsgfw_universe_t* universe, u32_t world_i)
 {
 	lsgfw_world_t* world = &universe->world_v[world_i];
 
 	glfwMakeContextCurrent(world->window);
 
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
+	glGenVertexArrays(1, &world->VAO);
+	glBindVertexArray(world->VAO);
+	
 	glfwMakeContextCurrent(NULL);
 }
 
-LSGFW_EXPORT void Start(lsgfw_universe_t* universe, u32_t world_i)
+LSGFW_API void Start(lsgfw_universe_t* universe, u32_t world_i)
 {
 	lsgfw_world_t* world = &universe->world_v[world_i];
 
 	// create buffers
 	glfwMakeContextCurrent(universe->window);
-		
+	
 	glGenBuffers(2, ssbos);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbos[0]);
@@ -113,7 +112,7 @@ LSGFW_EXPORT void Start(lsgfw_universe_t* universe, u32_t world_i)
 
 float r = 0;
 
-LSGFW_EXPORT void Update(lsgfw_universe_t* universe, u32_t world_i)
+LSGFW_API void Update(lsgfw_universe_t* universe, u32_t world_i)
 {
 	lsgfw_world_t* world = &universe->world_v[world_i];
 

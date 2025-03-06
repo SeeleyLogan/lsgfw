@@ -26,15 +26,11 @@ find_package(OpenMP REQUIRED)
 
 target_link_libraries(lsgfw PRIVATE OpenMP::OpenMP_C glfw)
 
-if (UNIX)
-	target_link_libraries(lsgfw PRIVATE m)
-endif()
-
 if (LSGFW_BUILD_TESTS)
 	add_subdirectory("${TESTS_DIR}/cube")
 endif()
 
 if (LSGFW_BUILD_ESSENTIALS)
-	add_subdirectory("${ESS_DIR}/lsgfw_global_sharing")
+	add_subdirectory("${ESS_DIR}/lsgfw_shaders")
+	add_subdirectory("${ESS_DIR}/lsgfw_script_utils")
 endif()
-

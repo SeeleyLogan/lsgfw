@@ -38,7 +38,7 @@ LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 		arrput(world->scripts.handle_v, script_handle);
 
 		if (Install)
-			arrput(world->scripts.Install_v,Install);
+			arrput(world->scripts.Install_v,	Install);
 		if (Start)
 			arrput(world->scripts.Start_v,  	Start);
 		if (Update)
