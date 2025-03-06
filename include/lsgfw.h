@@ -41,9 +41,6 @@
 	#endif
 #endif
 
-#define LSGFW_REALLOC(...)	realloc(__VA_ARGS__)
-#define LSGFW_FREE(...) 	free   (__VA_ARGS__)
-
 #define LSGFW_SUCCESS 	1
 #define LSGFW_FAIL		0
 
