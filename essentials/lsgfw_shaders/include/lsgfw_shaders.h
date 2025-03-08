@@ -6,7 +6,7 @@
     #define LSGFW_SHADERS_TAG "lsgfw_shaders"
 #else
     #error "Tag collision detected"
-#endif  // #ifndef LSGFW_SCRIPT_UTILS_TAG
+#endif  // #ifndef LSGFW_SHADERS_TAG
 
 #include <lsgfw.h>
 #include <stdio.h>

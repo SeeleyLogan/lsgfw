@@ -10,8 +10,16 @@ LSGFW_API bool_t init_lsgfw()
 	if (!glfwInit())
 		return LSGFW_FAIL;
 
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-	universe.window = glfwCreateWindow(1, 1, "lsgfw_universe_window", NULL, NULL);
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+#ifdef __APPLE
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+	universe.window = glfwCreateWindow(800, 600, "lsgfw_universe_window", NULL, NULL);
 
 	glfwMakeContextCurrent(universe.window);
 
@@ -19,7 +27,6 @@ LSGFW_API bool_t init_lsgfw()
 		return LSGFW_FAIL;
 
 	glGenVertexArrays(1, &universe.VAO);
-	glBindVertexArray(universe.VAO);
 
 	glfwMakeContextCurrent(NULL);
 

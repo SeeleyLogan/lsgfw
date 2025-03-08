@@ -15,17 +15,24 @@ LSGFW_API void lsgfw_start_world(u32_t world_i)
 
 LSGFW_API void lsgfw_loop_world(u32_t world_i)
 {
-	GLFWwindow* window = universe.world_v[world_i].window;
+	lsgfw_world_t* world  = &universe.world_v[world_i];
+	GLFWwindow*    window = universe.world_v[world_i].window;
 
-	while(!glfwWindowShouldClose(window))
+	while(!universe.ending && !glfwWindowShouldClose(universe.window) && !glfwWindowShouldClose(window))
 	{
 		glfwMakeContextCurrent(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glfwMakeContextCurrent(NULL);	
 
 		lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_UPDATE);
-		
+
+		glfwMakeContextCurrent(window);
+		glBindVertexArray(world->VAO);
+
 		glfwSwapBuffers(window);
+
+		glBindVertexArray(0);
+		glfwMakeContextCurrent(NULL);
 	}
 }
 

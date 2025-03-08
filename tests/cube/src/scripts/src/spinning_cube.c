@@ -49,24 +49,13 @@ mat4 view = GLM_MAT4_IDENTITY_INIT;
 mat4 proj = GLM_MAT4_IDENTITY_INIT;
 mat4 vp   = GLM_MAT4_IDENTITY_INIT;
 
-LSGFW_API void Install(lsgfw_universe_t* universe, u32_t world_i)
-{
-	lsgfw_world_t* world = &universe->world_v[world_i];
-
-	glfwMakeContextCurrent(world->window);
-
-	glGenVertexArrays(1, &world->VAO);
-	glBindVertexArray(world->VAO);
-	
-	glfwMakeContextCurrent(NULL);
-}
-
 LSGFW_API void Start(lsgfw_universe_t* universe, u32_t world_i)
 {
 	lsgfw_world_t* world = &universe->world_v[world_i];
 
 	// create buffers
 	glfwMakeContextCurrent(universe->window);
+	glBindVertexArray(world->VAO);
 	
 	glGenBuffers(2, ssbos);
 
@@ -107,6 +96,7 @@ LSGFW_API void Start(lsgfw_universe_t* universe, u32_t world_i)
 	free_file_source(vertex_source);
 	free_file_source(fragment_source);
 
+	glBindVertexArray(0);
 	glfwMakeContextCurrent(NULL);
 }
 
@@ -117,6 +107,7 @@ LSGFW_API void Update(lsgfw_universe_t* universe, u32_t world_i)
 	lsgfw_world_t* world = &universe->world_v[world_i];
 
 	glfwMakeContextCurrent(world->window);
+	glBindVertexArray(world->VAO);
 	
 	// spin camera around origin	
 	r += 0.01f;
@@ -143,6 +134,7 @@ LSGFW_API void Update(lsgfw_universe_t* universe, u32_t world_i)
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // debug
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(indices)/sizeof(u32_t));
 
+	glBindVertexArray(0);
 	glfwMakeContextCurrent(NULL);
 }
 
