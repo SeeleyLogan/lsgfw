@@ -16,7 +16,6 @@ if(MSVC)
 endif()
 
 add_library(lsgfw SHARED "${SRC_DIR}/lsgfw.c")
-target_compile_definitions(lsgfw PRIVATE LSGFW_API_EXPORT)
 
 target_include_directories(lsgfw PUBLIC  ${INCLUDE_DIR} ${DEP_DIR})
 target_include_directories(lsgfw PRIVATE ${SRC_DIR})
@@ -24,7 +23,7 @@ target_link_directories	  (lsgfw PRIVATE ${DEP_DIR})
 
 find_package(OpenMP REQUIRED)
 
-target_link_libraries(lsgfw PRIVATE OpenMP::OpenMP_C glfw)
+target_link_libraries(lsgfw PRIVATE OpenMP::OpenMP_C glfw3)
 
 if (UNIX)
 	target_link_libraries(lsgfw PRIVATE m)

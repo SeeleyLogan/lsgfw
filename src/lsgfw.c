@@ -5,7 +5,7 @@ LSGFW_API bool_t init_lsgfw()
 {
 	universe = (lsgfw_universe_t) { 0 };
 
-	omp_set_nested(1);	
+	omp_set_nested(1);
 
 	if (!glfwInit())
 		return LSGFW_FAIL;
@@ -15,7 +15,6 @@ LSGFW_API bool_t init_lsgfw()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
 #ifdef __APPLE
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
@@ -35,19 +34,24 @@ LSGFW_API bool_t init_lsgfw()
 
 LSGFW_API void run_lsgfw(void (*run_cb)())
 {
-	#pragma omp parallel sections shared(universe)
+	bool_t ending = 0;
+
+	#pragma omp parallel shared(ending)
 	{
-		#pragma omp parallel master
+		if (omp_get_thread_num() == 0)
 		{
-			while(!universe.ending)
+			while(!ending)
+			{
 				glfwPollEvents();
-
-			glfwTerminate();
+				Sleep(1);
+			}
 		}
-
-		#pragma omp section
+		
+		if (omp_get_thread_num() == 1)
 		{
 			run_cb();
+			
+			ending = 1;
 		}
 	}
 }
@@ -73,6 +77,6 @@ LSGFW_API void lsgfw_end_universe()
 
 	arrfree(universe.world_v);
 
-	universe.ending = LSGFW_TRUE;
+	glfwDestroyWindow(universe.window);
+	glfwTerminate();
 }
-

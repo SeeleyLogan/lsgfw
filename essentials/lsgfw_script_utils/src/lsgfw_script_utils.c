@@ -4,7 +4,13 @@
 lsgfw_script_utils_t lsgfw_script_utils =
 {
     load_file,
-	free_file
+	free_file,
+	clamp,
+	clampf,
+	clampllu,
+	clampll,
+	clampu,
+	clampi
 };
 
 LSGFW_API void Install(lsgfw_universe_t* universe, u32_t world_i)
@@ -36,4 +42,64 @@ char* load_file(char* file_name)
 void free_file(char* file_source)
 {
 	arrfree(file_source);
+}
+
+double clamp(double a, double min, double max)
+{
+	if (a > max)
+		return max;
+	else if (a < min)
+		return min;
+
+	return a;
+}
+
+float clampf(float a, float min, float max)
+{
+	if (a > max)
+		return max;
+	else if (a < min)
+		return min;
+
+	return a;
+}
+
+u64_t clampllu(u64_t a, u64_t min, u64_t max)
+{
+	if (a > max)
+		return max;
+	else if (a < min)
+		return min;
+
+	return a;
+}
+
+i64_t clampll(i64_t a, i64_t min, i64_t max)
+{
+	if (a > max)
+		return max;
+	else if (a < min)
+		return min;
+
+	return a;
+}
+
+u32_t clampu(u32_t a, u32_t min, u32_t max)
+{
+	if (a > max)
+		return max;
+	else if (a < min)
+		return min;
+
+	return a;
+}
+
+i32_t clampi(i32_t a, i32_t min, i32_t max)
+{
+	if (a > max)
+		return max;
+	else if (a < min)
+		return min;
+
+	return a;
 }

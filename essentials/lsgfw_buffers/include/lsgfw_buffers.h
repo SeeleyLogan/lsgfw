@@ -9,6 +9,7 @@
 #endif  // #ifndef LSGFW_BUFFERS_TAG
 
 #include <lsgfw.h>
+
 #include <stb/stb_ds.h>
 
 typedef struct lsgfw_mapped_buffer_s

@@ -16,9 +16,9 @@ LSGFW_API void lsgfw_start_world(u32_t world_i)
 LSGFW_API void lsgfw_loop_world(u32_t world_i)
 {
 	lsgfw_world_t* world  = &universe.world_v[world_i];
-	GLFWwindow*    window = universe.world_v[world_i].window;
+	GLFWwindow* window 	  = world->window;
 
-	while(!universe.ending && !glfwWindowShouldClose(universe.window) && !glfwWindowShouldClose(window))
+	while(!glfwWindowShouldClose(window))
 	{
 		glfwMakeContextCurrent(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -33,19 +33,12 @@ LSGFW_API void lsgfw_loop_world(u32_t world_i)
 
 		glBindVertexArray(0);
 		glfwMakeContextCurrent(NULL);
+		Sleep(1);
 	}
 }
 
 LSGFW_API void lsgfw_end_world(u32_t world_i)
 {
-	GLFWwindow* window = universe.world_v[world_i].window;
-	
 	lsgfw_invoke_scripts(world_i, LSGFW_SCRIPT_END);
-
-	if (universe.world_v[world_i].window)
-	{
-		glfwDestroyWindow(universe.world_v[world_i].window);
-		universe.world_v[world_i].window = NULL;
-	}
 }
 

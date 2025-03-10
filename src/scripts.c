@@ -1,8 +1,10 @@
+#include <stdio.h>
+
 LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 {
 	lsgfw_glob_t script_glob = NULL;
 
-	#if defined(__WIN32)
+	#if defined(_WIN32)
 
 	if (!lsgfw_glob(&script_glob, path, "*.dll"))
 		return LSGFW_ATTACH_GLOB_FAILED;
@@ -15,17 +17,18 @@ LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 	#endif
 
 	if (!arrlenu(script_glob))
-		return LSGFW_NO_SCRIPTS;	
+		return LSGFW_NO_SCRIPTS;
 
 	lsgfw_world_t* world = &universe.world_v[world_i];
-	
-	u32_t fail_c = 0;	
+
+	u32_t fail_c = 0;
 	for (int i = 0; i < arrlenu(script_glob); i++)
 	{
 		void* script_handle = lsgfw_get_shared_lib_handle(script_glob[i]);
 
 		if (!script_handle)
 		{
+			printf("%s\n", script_glob[i]);
 			fail_c++;
 			continue;
 		}

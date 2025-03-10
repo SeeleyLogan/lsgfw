@@ -21,7 +21,10 @@ void quick_mapped_buffer(u32_t buff_size, void* data, lsgfw_mapped_buffer_t* lsg
         GL_MAP_PERSISTENT_BIT
     );
 
-    lsgfw_mapped_buffer->mapped_buffer = glMapNamedBuffer(lsgfw_mapped_buffer->named_buffer,
-        GL_READ_WRITE
+    lsgfw_mapped_buffer->mapped_buffer = glMapNamedBufferRange(lsgfw_mapped_buffer->named_buffer, 0, buff_size,
+        GL_MAP_WRITE_BIT            | 
+        GL_MAP_READ_BIT             | 
+        GL_MAP_PERSISTENT_BIT       |
+        GL_MAP_FLUSH_EXPLICIT_BIT
     );
 }

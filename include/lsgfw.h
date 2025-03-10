@@ -1,14 +1,6 @@
 #ifndef LSGFW_H
 #define LSGFW_H
 
-#define GLAD_GLAPI_EXPORT
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
-
-#include <stb/stb_ds.h>
-
-#include <omp.h>
-
 #ifdef LSGFW_SCRIPT
 	#if defined(_WIN32)
 		#ifdef __GNUC__
@@ -39,7 +31,22 @@
 	#else
 		#define LSGFW_API extern
 	#endif
+#endif  // #ifdef LSGFW_SCRIPT
+
+#define GLAD_GLAPI_EXPORT
+#ifdef LSGFW_IMPLEMENTATION
+	#define GLAD_GLAPI_EXPORT_BUILD
 #endif
+#include <glad/glad.h>
+
+#if defined(_WIN32) && !defined(LSGFW_IMPLEMENTATION)
+	#define GLFW_DLL
+#endif
+#include <glfw/glfw3.h>
+
+#include <stb/stb_ds.h>
+
+#include <omp.h>
 
 #define LSGFW_SUCCESS 	1
 #define LSGFW_FAIL		0
@@ -72,7 +79,6 @@ typedef struct lsgfw_univserse_s
 	GLuint			VAO;
 	lsgfw_world_t* 	world_v;
 	lsgfw_kv_t*		global;
-	bool_t 		   	ending;
 }
 lsgfw_universe_t;
 

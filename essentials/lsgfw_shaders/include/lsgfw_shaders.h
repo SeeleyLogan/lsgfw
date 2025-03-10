@@ -9,8 +9,10 @@
 #endif  // #ifndef LSGFW_SHADERS_TAG
 
 #include <lsgfw.h>
-#include <stdio.h>
+
 #include <stb/stb_ds.h>
+
+#include <stdio.h>
 
 #ifdef LSGFW_SHADERS_IMPLEMENTATION
 
