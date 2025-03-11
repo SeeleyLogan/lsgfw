@@ -173,10 +173,15 @@ LSGFW_API void  lsgfw_close_shared_lib	   (void* handle);
 
 #if defined (_WIN32)
 	#include <windows.h>
+
+	#define LSGFW_SLEEP(millis) Sleep(millis)
 #else
 	#include <dlfcn.h>
 	#include <dirent.h>
 	#include <fnmatch.h>
+	#include <unistd.h>
+
+	#define LSGFW_SLEEP(millis) sleep(millis)
 #endif
 
 lsgfw_universe_t universe;

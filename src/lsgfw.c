@@ -43,7 +43,7 @@ LSGFW_API void run_lsgfw(void (*run_cb)())
 			while(!ending)
 			{
 				glfwPollEvents();
-				Sleep(1);
+				LSGFW_SLEEP(1);
 			}
 		}
 		

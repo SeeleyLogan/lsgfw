@@ -33,7 +33,8 @@ LSGFW_API void lsgfw_loop_world(u32_t world_i)
 
 		glBindVertexArray(0);
 		glfwMakeContextCurrent(NULL);
-		Sleep(1);
+		
+		LSGFW_SLEEP(1);
 	}
 }
 
