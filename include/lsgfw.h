@@ -173,10 +173,15 @@ LSGFW_API bool_t init_vk_instance				 (char* app_name, u32_t version, u32_t vali
 
 #if defined (_WIN32)
 	#include <windows.h>
+
+	#define LSGFW_SLEEP(millis) Sleep(millis)
 #else
 	#include <dlfcn.h>
 	#include <dirent.h>
 	#include <fnmatch.h>
+	#include <unistd.h>
+
+	#define LSGFW_SLEEP(millis) sleep(millis)
 #endif
 
 lsgfw_universe_t universe;

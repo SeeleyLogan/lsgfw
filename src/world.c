@@ -26,7 +26,7 @@ void lsgfw_loop_world(u32_t world_i)
 		glfwSwapBuffers(window);
 		glfwMakeContextCurrent(NULL);
 
-		Sleep(1);
+		LSGFW_SLEEP(1);
 	}
 }
 
