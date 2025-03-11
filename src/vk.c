@@ -1,35 +1,6 @@
-bool_t check_validation_layer_support(u32_t validation_layer_count, char** validation_layers) {
-    u32_t layer_count;
-    vkEnumerateInstanceLayerProperties(&layer_count, NULL);
+#include <stdio.h>
 
-    VkLayerProperties* available_layers = NULL;
-	arrsetlen(available_layers, layer_count);
-
-    vkEnumerateInstanceLayerProperties(&layer_count, available_layers);
-
-    for (u32_t i = 0; i < validation_layer_count; i++)
-	{
-		char* validation_layer_name = validation_layers[i];
-		bool_t layer_found = LSGFW_FALSE;
-	
-		for (u32_t j = 0; j < layer_count; j++)
-		{
-			VkLayerProperties layer_properities = available_layers[j];
-			if (strcmp(validation_layer_name, layer_properities.layerName) == 0)
-			{
-				layer_found = LSGFW_TRUE;
-				break;
-			}
-		}
-	
-		if (!layer_found)
-			return LSGFW_FAIL;
-	}
-	
-	return LSGFW_SUCCESS;
-}
-
-bool_t init_vk_instance(char* app_name, u32_t version, u32_t validation_layer_count, char** validation_layers)
+bool_t init_vk_instance(char* app_name, u32_t version, u32_t validation_layer_c, char** validation_layer_v)
 {
 	VkApplicationInfo app_info = { 0 };
 
@@ -37,7 +8,7 @@ bool_t init_vk_instance(char* app_name, u32_t version, u32_t validation_layer_co
 
     app_info.pApplicationName = app_name;
     app_info.applicationVersion = version;
-
+	
     app_info.pEngineName = "lsgfw";
     app_info.engineVersion = VK_MAKE_VERSION(1, 1, 0);
     app_info.apiVersion = VK_API_VERSION_1_0;
@@ -63,18 +34,54 @@ bool_t init_vk_instance(char* app_name, u32_t version, u32_t validation_layer_co
 	create_info.enabledExtensionCount   = arrlenu(required_extensions);
 	create_info.ppEnabledExtensionNames = required_extensions;
 
-	if (validation_layer_count && check_validation_layer_support(validation_layer_count, validation_layers))
+	if (validation_layer_c && check_validation_layer_support(validation_layer_c, validation_layer_v))
 	{
-		create_info.enabledLayerCount   = validation_layer_count;
-    	create_info.ppEnabledLayerNames = (void*) validation_layers;
+		create_info.enabledLayerCount   = validation_layer_c;
+    	create_info.ppEnabledLayerNames = (void*) validation_layer_v;
 	}
-	else if (!validation_layer_count)
+	else if (!validation_layer_c)
 		create_info.enabledLayerCount = 0;
 	else
 		return LSGFW_FAIL;
-
+	
 	if (vkCreateInstance(&create_info, NULL, &universe.vk_instance) != VK_SUCCESS)
 		return LSGFW_FAIL;
 
+	arrfree(required_extensions);
+
+	return LSGFW_SUCCESS;
+}
+
+bool_t check_validation_layer_support(u32_t validation_layer_c, char** validation_layer_v)
+{
+    u32_t layer_c;
+    vkEnumerateInstanceLayerProperties(&layer_c, NULL);
+
+    VkLayerProperties* available_layer_v = NULL;
+	arrsetlen(available_layer_v, layer_c);
+
+    vkEnumerateInstanceLayerProperties(&layer_c, available_layer_v);
+
+    for (u32_t i = 0; i < validation_layer_c; i++)
+	{
+		char* validation_layer_name = validation_layer_v[i];
+		bool_t layer_found = LSGFW_FALSE;
+	
+		for (u32_t j = 0; j < layer_c; j++)
+		{
+			VkLayerProperties layer_properities = available_layer_v[j];
+			if (strcmp(validation_layer_name, layer_properities.layerName) == 0)
+			{
+				layer_found = LSGFW_TRUE;
+				break;
+			}
+		}
+	
+		if (!layer_found)
+			return LSGFW_FAIL;
+	}
+
+	arrfree(available_layer_v);
+	
 	return LSGFW_SUCCESS;
 }

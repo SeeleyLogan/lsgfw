@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
 
 project(cube LANGUAGES C)
 
-set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../include")
+set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(SRC_DIR	    "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 file(GLOB_RECURSE SCRIPTS_SOURCES "${SRC_DIR}/*.c")
@@ -15,7 +15,7 @@ foreach(SCRIPT_SOURCE ${SCRIPTS_SOURCES})
 	target_compile_definitions(${SCRIPT_NAME} PRIVATE LSGFW_SCRIPT)
 
 	target_include_directories(${SCRIPT_NAME} PRIVATE ${INCLUDE_DIR})
-	target_link_directories	  (${SCRIPT_NAME} PRIVATE ${DEP_DIR})
+	target_link_directories	  (${SCRIPT_NAME} PRIVATE "${DEP_DIR}/lib")
 
 	target_link_libraries(${SCRIPT_NAME} PRIVATE lsgfw vulkan-1)
 endforeach()

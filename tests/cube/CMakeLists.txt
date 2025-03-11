@@ -20,6 +20,7 @@ if (UNIX)
 	target_link_libraries(cube PRIVATE m)
 endif()
 
+install(TARGETS lsgfw DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/src")
 
 #file(GLOB_RECURSE asset_files "${CMAKE_CURRENT_SOURCE_DIR}/assets/*")
 

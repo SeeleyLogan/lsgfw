@@ -2,39 +2,39 @@
 #define LSGFW_H
 
 #ifdef LSGFW_SCRIPT
-	#if defined(_WIN32)
-		#ifdef __GNUC__
-			#define LSGFW_API __attribute__ ((dllexport)) extern
-		#else
-			#define LSGFW_API __declspec(dllexport) extern
-		#endif
-	#elif defined(__GNUC__)
-		#define LSGFW_API __attribute__ ((visibility ("default"))) extern
-	#endif
+    #if defined(_WIN32)
+        #ifdef __GNUC__
+            #define LSGFW_API __attribute__ ((dllexport)) extern
+        #else
+            #define LSGFW_API __declspec(dllexport) extern
+        #endif
+    #elif defined(__GNUC__)
+        #define LSGFW_API __attribute__ ((visibility ("default"))) extern
+    #endif
 #else
-	#if defined(_WIN32)
-		#if defined(LSGFW_IMPLEMENTATION)
-			#ifdef __GNUC__
-				#define LSGFW_API __attribute__ ((dllexport)) extern
-			#else
-				#define LSGFW_API __declspec(dllexport) extern
-			#endif
-		#else
-			#ifdef __GNUC__
-				#define LSGFW_API __attribute__ ((dllimport)) extern
-			#else
-				#define LSGFW_API __declspec(dllimport) extern
-			#endif
-		#endif
-	#elif defined(__GNUC__) && defined(LSGFW_IMPLEMENTATION)
-		#define LSGFW_API __attribute__ ((visibility ("default"))) extern
-	#else
-		#define LSGFW_API extern
-	#endif
+    #if defined(_WIN32)
+        #if defined(LSGFW_IMPLEMENTATION)
+            #ifdef __GNUC__
+                #define LSGFW_API __attribute__ ((dllexport)) extern
+            #else
+                #define LSGFW_API __declspec(dllexport) extern
+            #endif
+        #else
+            #ifdef __GNUC__
+                #define LSGFW_API __attribute__ ((dllimport)) extern
+            #else
+                #define LSGFW_API __declspec(dllimport) extern
+            #endif
+        #endif
+    #elif defined(__GNUC__) && defined(LSGFW_IMPLEMENTATION)
+        #define LSGFW_API __attribute__ ((visibility ("default"))) extern
+    #else
+        #define LSGFW_API extern
+    #endif
 #endif  // #ifdef LSGFW_SCRIPT
 
 #if defined(_WIN32) && !defined(LSGFW_IMPLEMENTATION)
-	#define GLFW_DLL
+    #define GLFW_DLL
 #endif
 #define GLFW_INCLUDE_VULKAN
 #include <glfw3/glfw3.h>
@@ -63,34 +63,34 @@ typedef struct lsgfw_world_s lsgfw_world_t;
 
 typedef struct lsgfw_kv_s
 {
-	char* key;
-	void* value;
+    char* key;
+    void* value;
 }
 lsgfw_kv_t;
 
 typedef struct lsgfw_univserse_s
 {
-	VkInstance 		vk_instance;
-	lsgfw_world_t* 	world_v;
-	lsgfw_kv_t*		global;
+    VkInstance 		vk_instance;
+    lsgfw_world_t* 	world_v;
+    lsgfw_kv_t*		global;
 }
 lsgfw_universe_t;
 
 typedef struct lsgfw_scripts_s
 {
-	void** 	handle_v;
-	void  	(**Install_v)(lsgfw_universe_t*, u32_t);
-	void  	(**Start_v)  (lsgfw_universe_t*, u32_t);
-	void  	(**Update_v) (lsgfw_universe_t*, u32_t);
-	void  	(**End_v)    (lsgfw_universe_t*, u32_t);
+    void** 	handle_v;
+    void  	(**Install_v)(lsgfw_universe_t*, u32_t);
+    void  	(**Start_v)  (lsgfw_universe_t*, u32_t);
+    void  	(**Update_v) (lsgfw_universe_t*, u32_t);
+    void  	(**End_v)    (lsgfw_universe_t*, u32_t);
 }
 lsgfw_scripts_t;
 
 struct lsgfw_world_s
 {
-	GLFWwindow* 	window;
-	lsgfw_kv_t*		global;
-	lsgfw_scripts_t scripts;
+    GLFWwindow* 	window;
+    lsgfw_kv_t*		global;
+    lsgfw_scripts_t scripts;
 };
 
 typedef char** lsgfw_glob_t;
@@ -163,8 +163,8 @@ LSGFW_API void  lsgfw_close_shared_lib	   (void* handle);
 //  vk_handler.c
 // ==============
 
-LSGFW_API bool_t check_validation_layer_support(u32_t validation_layer_count, char** validation_layers);  // use for debugging
-LSGFW_API bool_t init_vk_instance				 (char* app_name, u32_t version, u32_t validation_layer_count, char** validation_layers);
+LSGFW_API bool_t check_validation_layer_support(u32_t validation_layer_c, char** validation_layer_v);  // use for debugging
+LSGFW_API bool_t init_vk_instance			   (char* app_name, u32_t version, u32_t validation_layer_c, char** validation_layer_v);
 
 #ifdef LSGFW_IMPLEMENTATION
 
@@ -172,16 +172,16 @@ LSGFW_API bool_t init_vk_instance				 (char* app_name, u32_t version, u32_t vali
 #include <stb/stb_ds.h>
 
 #if defined (_WIN32)
-	#include <windows.h>
+    #include <windows.h>
 
-	#define LSGFW_SLEEP(millis) Sleep(millis)
+    #define LSGFW_SLEEP(millis) Sleep(millis)
 #else
-	#include <dlfcn.h>
-	#include <dirent.h>
-	#include <fnmatch.h>
-	#include <unistd.h>
+    #include <dlfcn.h>
+    #include <dirent.h>
+    #include <fnmatch.h>
+    #include <unistd.h>
 
-	#define LSGFW_SLEEP(millis) sleep(millis)
+    #define LSGFW_SLEEP(millis) sleep(millis)
 #endif
 
 lsgfw_universe_t universe;
@@ -191,7 +191,7 @@ lsgfw_universe_t universe;
 #include <window.c>
 #include <shared_lib.c>
 #include <scripts.c>
-#include <vk_handler.c>
+#include <vk.c>
 
 #endif  // #ifdef LSGFW_IMPLEMENTATION
 #endif  // #ifndef LSGFW_SCRIPT

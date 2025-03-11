@@ -1,5 +1,4 @@
-#include <cube.h>
-#include <stdio.h>
+#include <window_handler.h>
 
 LSGFW_API void Start(lsgfw_universe_t* universe, u32_t world_i)
 {

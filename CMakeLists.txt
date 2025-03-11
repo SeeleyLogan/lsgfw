@@ -17,9 +17,9 @@ endif()
 
 add_library(lsgfw SHARED "${SRC_DIR}/lsgfw.c")
 
-target_include_directories(lsgfw PUBLIC  ${INCLUDE_DIR} ${DEP_DIR})
+target_include_directories(lsgfw PUBLIC  ${INCLUDE_DIR} "${DEP_DIR}/include")
 target_include_directories(lsgfw PRIVATE ${SRC_DIR})
-target_link_directories	  (lsgfw PRIVATE ${DEP_DIR})
+target_link_directories	  (lsgfw PRIVATE "${DEP_DIR}/lib")
 
 find_package(OpenMP REQUIRED)
 
