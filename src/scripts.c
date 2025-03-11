@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
+i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 {
 	lsgfw_glob_t script_glob = NULL;
 
@@ -55,7 +55,7 @@ LSGFW_API i32_t lsgfw_attach_scripts(u32_t world_i, const char* path)
 	return fail_c;
 }
 
-LSGFW_API void lsgfw_invoke_scripts(u32_t world_i, u8_t func_offset)
+void lsgfw_invoke_scripts(u32_t world_i, u8_t func_offset)
 {
 	void (**script_funcs)(lsgfw_universe_t*, u32_t);
 
@@ -78,7 +78,7 @@ LSGFW_API void lsgfw_invoke_scripts(u32_t world_i, u8_t func_offset)
 		script_funcs[i](&universe, world_i);
 }
 
-LSGFW_API void lsgfw_free_scripts(u32_t world_i)
+void lsgfw_free_scripts(u32_t world_i)
 {
 	lsgfw_scripts_t* scripts = &universe.world_v[world_i].scripts;
 

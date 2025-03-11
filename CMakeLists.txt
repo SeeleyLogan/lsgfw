@@ -23,7 +23,7 @@ target_link_directories	  (lsgfw PRIVATE ${DEP_DIR})
 
 find_package(OpenMP REQUIRED)
 
-target_link_libraries(lsgfw PRIVATE OpenMP::OpenMP_C glfw3)
+target_link_libraries(lsgfw PRIVATE OpenMP::OpenMP_C glfw3 vulkan-1)
 
 if (UNIX)
 	target_link_libraries(lsgfw PRIVATE m)
@@ -34,7 +34,5 @@ if (LSGFW_BUILD_TESTS)
 endif()
 
 if (LSGFW_BUILD_ESSENTIALS)
-	add_subdirectory("${ESS_DIR}/lsgfw_shaders")
-	add_subdirectory("${ESS_DIR}/lsgfw_script_utils")
-	add_subdirectory("${ESS_DIR}/lsgfw_buffers")
+	
 endif()

@@ -15,6 +15,7 @@ foreach(SCRIPT_SOURCE ${SCRIPTS_SOURCES})
 	target_compile_definitions(${SCRIPT_NAME} PRIVATE LSGFW_SCRIPT)
 
 	target_include_directories(${SCRIPT_NAME} PRIVATE ${INCLUDE_DIR})
+	target_link_directories	  (${SCRIPT_NAME} PRIVATE ${DEP_DIR})
 
-	target_link_libraries(${SCRIPT_NAME} PRIVATE lsgfw)
+	target_link_libraries(${SCRIPT_NAME} PRIVATE lsgfw vulkan-1)
 endforeach()

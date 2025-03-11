@@ -33,16 +33,11 @@
 	#endif
 #endif  // #ifdef LSGFW_SCRIPT
 
-#define GLAD_GLAPI_EXPORT
-#ifdef LSGFW_IMPLEMENTATION
-	#define GLAD_GLAPI_EXPORT_BUILD
-#endif
-#include <glad/glad.h>
-
 #if defined(_WIN32) && !defined(LSGFW_IMPLEMENTATION)
 	#define GLFW_DLL
 #endif
-#include <glfw/glfw3.h>
+#define GLFW_INCLUDE_VULKAN
+#include <glfw3/glfw3.h>
 
 #include <stb/stb_ds.h>
 
@@ -75,8 +70,7 @@ lsgfw_kv_t;
 
 typedef struct lsgfw_univserse_s
 {
-	GLFWwindow*	   	window;
-	GLuint			VAO;
+	VkInstance 		vk_instance;
 	lsgfw_world_t* 	world_v;
 	lsgfw_kv_t*		global;
 }
@@ -95,7 +89,6 @@ lsgfw_scripts_t;
 struct lsgfw_world_s
 {
 	GLFWwindow* 	window;
-	GLuint			VAO;
 	lsgfw_kv_t*		global;
 	lsgfw_scripts_t scripts;
 };
@@ -118,8 +111,8 @@ LSGFW_API void 				lsgfw_end_universe();
 //  util.c
 // ========
 
-LSGFW_API u8_t lsgfw_glob	  (lsgfw_glob_t* glob, const char* glob_path, const char* pattern);
-LSGFW_API void lsgfw_free_glob(lsgfw_glob_t glob);
+LSGFW_API bool_t lsgfw_glob	    (lsgfw_glob_t* glob, const char* glob_path, const char* pattern);
+LSGFW_API void 	 lsgfw_free_glob(lsgfw_glob_t  glob);
 
 // =========
 //  world.c
@@ -166,6 +159,13 @@ LSGFW_API void* lsgfw_get_shared_lib_handle(const char* file_path);
 LSGFW_API void* lsgfw_get_shared_lib_func  (void* handle, const char* func_name);
 LSGFW_API void  lsgfw_close_shared_lib	   (void* handle);
 
+// ==============
+//  vk_handler.c
+// ==============
+
+LSGFW_API bool_t check_validation_layer_support(u32_t validation_layer_count, char** validation_layers);  // use for debugging
+LSGFW_API bool_t init_vk_instance				 (char* app_name, u32_t version, u32_t validation_layer_count, char** validation_layers);
+
 #ifdef LSGFW_IMPLEMENTATION
 
 #define STB_DS_IMPLEMENTATION
@@ -186,8 +186,7 @@ lsgfw_universe_t universe;
 #include <window.c>
 #include <shared_lib.c>
 #include <scripts.c>
-
-#include <glad/glad.c>
+#include <vk_handler.c>
 
 #endif  // #ifdef LSGFW_IMPLEMENTATION
 #endif  // #ifndef LSGFW_SCRIPT

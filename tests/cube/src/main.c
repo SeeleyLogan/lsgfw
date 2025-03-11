@@ -1,32 +1,27 @@
 #include <cube.h>
 
-u32_t world_i;
+u32_t world_one;
 
-void run();
+void run_cb();
 
 int main()
 {
-	if (!init_lsgfw())
+	if (!init_lsgfw() || !init_vk_instance("Cube", VK_MAKE_VERSION(1, 0, 0), 1, (char*[]) { "VK_LAYER_KHRONOS_validation" }))
 		return 1;
 
-	world_i = lsgfw_new_world();
+    lsgfw_universe_t* universe = lsgfw_get_universe();
 
-	lsgfw_attach_scripts(world_i, "./scripts/");
+	world_one = lsgfw_new_world();	
+	lsgfw_attach_scripts(world_one, "./scripts/");
 
-	lsgfw_get_universe()->world_v[world_i].window = lsgfw_quick_window("window1!");
-	run_lsgfw(run);
-	glfwDestroyWindow(lsgfw_get_universe()->world_v[world_i].window);
-
-	lsgfw_get_universe()->world_v[world_i].window = lsgfw_quick_window("window2!");
-	run_lsgfw(run);
-	glfwDestroyWindow(lsgfw_get_universe()->world_v[world_i].window);
-
+	universe->world_v[world_one].window = lsgfw_quick_window("window!");
+	run_lsgfw(run_cb);
 	lsgfw_end_universe();
 }
 
-void run()
-{
-	lsgfw_start_world(world_i);
-	lsgfw_loop_world (world_i);
-	lsgfw_end_world  (world_i);
+void run_cb()
+{	
+	lsgfw_start_world(world_one);
+	lsgfw_loop_world (world_one);
+	lsgfw_end_world  (world_one);
 }

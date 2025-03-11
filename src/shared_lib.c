@@ -1,4 +1,4 @@
-LSGFW_API void* lsgfw_get_shared_lib_handle(const char* file_path)
+void* lsgfw_get_shared_lib_handle(const char* file_path)
 {
 #if defined(_WIN32)
 	HINSTANCE handle = LoadLibrary(file_path);	
@@ -12,7 +12,7 @@ LSGFW_API void* lsgfw_get_shared_lib_handle(const char* file_path)
 	return handle;
 }
 
-LSGFW_API void* lsgfw_get_shared_lib_func(void* handle, const char* func_name)
+void* lsgfw_get_shared_lib_func(void* handle, const char* func_name)
 {
 #if defined(_WIN32)
 	void (*func_addr)() = (void*) GetProcAddress(handle, func_name);
@@ -23,7 +23,7 @@ LSGFW_API void* lsgfw_get_shared_lib_func(void* handle, const char* func_name)
 	return func_addr;
 }
 
-LSGFW_API void lsgfw_close_shared_lib(void* handle)
+void lsgfw_close_shared_lib(void* handle)
 {
 #if defined(_WIN32)
 	FreeLibrary(handle);

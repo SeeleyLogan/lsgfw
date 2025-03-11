@@ -1,4 +1,4 @@
-LSGFW_API u8_t lsgfw_glob(lsgfw_glob_t* glob, const char* glob_path, const char* pattern)
+bool_t lsgfw_glob(lsgfw_glob_t* glob, const char* glob_path, const char* pattern)
 {
 	u32_t glob_path_len = strlen(glob_path);
 	char* path_pattern = NULL;
@@ -54,7 +54,7 @@ LSGFW_API u8_t lsgfw_glob(lsgfw_glob_t* glob, const char* glob_path, const char*
 	return LSGFW_SUCCESS;
 }
 
-LSGFW_API void lsgfw_free_glob(lsgfw_glob_t glob)
+void lsgfw_free_glob(lsgfw_glob_t glob)
 {
 	for (u32_t i = 0; i < arrlen(glob); i++)
 		arrfree(glob[i]);
