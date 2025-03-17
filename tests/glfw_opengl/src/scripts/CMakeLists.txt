@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
+
+set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(SRC_DIR	    "${CMAKE_CURRENT_SOURCE_DIR}/src")
+
+set(PLUGS_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../../include")
+set(PLUGS_DEP_DIR	  "${CMAKE_CURRENT_SOURCE_DIR}/../../../../dependencies")
+
+file(GLOB_RECURSE SCRIPTS_SOURCES "${SRC_DIR}/*.c")
+
+foreach(SCRIPT_SOURCE ${SCRIPTS_SOURCES})
+	get_filename_component(SCRIPT_NAME ${SCRIPT_SOURCE} NAME_WE)	
+
+	add_library(${SCRIPT_NAME} SHARED ${SCRIPT_SOURCE})
+
+	target_include_directories(${SCRIPT_NAME} PRIVATE ${INCLUDE_DIR} ${PLUGS_INCLUDE_DIR} ${PLUGS_DEP_DIR})
+endforeach()

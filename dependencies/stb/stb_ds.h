@@ -468,38 +468,38 @@ CREDITS
 #endif
 
 #ifdef __cplusplus
-LSGFW_API "C" {
+extern "C" {
 #endif
 
 // for security against attackers, seed the library with a random number, at least time() but stronger is better
-LSGFW_API void stbds_rand_seed(size_t seed);
+extern void stbds_rand_seed(size_t seed);
 
 // these are the hash functions used internally if you want to test them or use them for other purposes
-LSGFW_API size_t stbds_hash_bytes(void *p, size_t len, size_t seed);
-LSGFW_API size_t stbds_hash_string(char *str, size_t seed);
+extern size_t stbds_hash_bytes(void *p, size_t len, size_t seed);
+extern size_t stbds_hash_string(char *str, size_t seed);
 
 // this is a simple string arena allocator, initialize with e.g. 'stbds_string_arena my_arena={0}'.
 typedef struct stbds_string_arena stbds_string_arena;
-LSGFW_API char * stbds_stralloc(stbds_string_arena *a, char *str);
-LSGFW_API void   stbds_strreset(stbds_string_arena *a);
+extern char * stbds_stralloc(stbds_string_arena *a, char *str);
+extern void   stbds_strreset(stbds_string_arena *a);
 
 // have to #define STBDS_UNIT_TESTS to call this
-LSGFW_API void stbds_unit_tests(void);
+extern void stbds_unit_tests(void);
 
 ///////////////
 //
 // Everything below here is implementation details
 //
 
-LSGFW_API void * stbds_arrgrowf(void *a, size_t elemsize, size_t addlen, size_t min_cap);
-LSGFW_API void   stbds_arrfreef(void *a);
-LSGFW_API void   stbds_hmfree_func(void *p, size_t elemsize);
-LSGFW_API void * stbds_hmget_key(void *a, size_t elemsize, void *key, size_t keysize, int mode);
-LSGFW_API void * stbds_hmget_key_ts(void *a, size_t elemsize, void *key, size_t keysize, ptrdiff_t *temp, int mode);
-LSGFW_API void * stbds_hmput_default(void *a, size_t elemsize);
-LSGFW_API void * stbds_hmput_key(void *a, size_t elemsize, void *key, size_t keysize, int mode);
-LSGFW_API void * stbds_hmdel_key(void *a, size_t elemsize, void *key, size_t keysize, size_t keyoffset, int mode);
-LSGFW_API void * stbds_shmode_func(size_t elemsize, int mode);
+extern void * stbds_arrgrowf(void *a, size_t elemsize, size_t addlen, size_t min_cap);
+extern void   stbds_arrfreef(void *a);
+extern void   stbds_hmfree_func(void *p, size_t elemsize);
+extern void * stbds_hmget_key(void *a, size_t elemsize, void *key, size_t keysize, int mode);
+extern void * stbds_hmget_key_ts(void *a, size_t elemsize, void *key, size_t keysize, ptrdiff_t *temp, int mode);
+extern void * stbds_hmput_default(void *a, size_t elemsize);
+extern void * stbds_hmput_key(void *a, size_t elemsize, void *key, size_t keysize, int mode);
+extern void * stbds_hmdel_key(void *a, size_t elemsize, void *key, size_t keysize, size_t keyoffset, int mode);
+extern void * stbds_shmode_func(size_t elemsize, int mode);
 
 #ifdef __cplusplus
 }

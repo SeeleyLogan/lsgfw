@@ -1,6 +1,2 @@
 bin/
-build/
-dependencies/glfw/
-dependencies/libglfw3.a
-dependencies/vulkan-1.lib
 .vscode/
