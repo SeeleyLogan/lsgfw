@@ -13,7 +13,7 @@ glfw_opengl_t glfw_opengl =
 int main()
 {
     outlet.user_ptr = &glfw_opengl;
-    load_plugs  (&outlet, "./scripts", "*.so");
+    load_plugs  (&outlet, "./scripts", "*.dll");
     
     invoke_plugs(&outlet);  // Start
     glfw_opengl.v1_0.phase++;

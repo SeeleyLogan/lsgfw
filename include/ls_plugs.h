@@ -109,9 +109,15 @@ inline void ls_plugs_load_plugs(ls_plugs_outlet_t* outlet, const char* plugs_pat
 		void* plug_handle    = GET_SHARED_LIBRARY_HANDLE(plug_glob[i]);
 		void* plug_main_func = GET_SHARED_LIBRARY_FUNCTION(plug_handle, "PlugMain");
 
-		if (!plug_handle || !plug_main_func)
+		if (!plug_handle)
 			continue;
-
+		
+		if (!plug_main_func)
+		{
+			CLOSE_SHARED_LIBRARY(plug_handle);
+			continue;
+		}
+		
 		outlet->plug_c++;
 		arrput(outlet->plug_handle_v, 	 plug_handle);
 		arrput(outlet->plug_main_func_v, plug_main_func);
@@ -137,6 +143,7 @@ inline void ls_plugs_invoke_plugs(ls_plugs_outlet_t* outlet)
 
 inline ls_plugs_glob_t ls_plugs_glob(const char* glob_path, const char* pattern)
 {
+#if defined(_WIN32)
 	ls_plugs_glob_t glob = NULL;
 	ls_u32_t 		glob_path_len = strlen(glob_path);
 	char* 		  	path_pattern  = NULL;
@@ -145,9 +152,9 @@ inline ls_plugs_glob_t ls_plugs_glob(const char* glob_path, const char* pattern)
 	arrsetlen(path_pattern, glob_path_len + pattern_len + 1);
 
 	memcpy(path_pattern, glob_path, glob_path_len);
-	memcpy(path_pattern + glob_path_len, pattern, pattern_len + 1);	
+	path_pattern[glob_path_len] = '/';
+	memcpy(path_pattern + glob_path_len + 1, pattern, pattern_len + 1);
 
-#if defined(_WIN32)
 	WIN32_FIND_DATAA file_data;
 	HANDLE file_handle = FindFirstFileA(path_pattern, &file_data);
 	do
@@ -155,15 +162,25 @@ inline ls_plugs_glob_t ls_plugs_glob(const char* glob_path, const char* pattern)
 		char* 	 full_path 	   = NULL;
 		ls_u32_t file_name_len = strlen(file_data.cFileName);
 
-		arrsetlen(full_path, glob_path_len + file_name_len + 1);
+		arrsetlen(full_path, glob_path_len + file_name_len + 2);
 
 		memcpy(full_path, glob_path, glob_path_len);
-		memcpy(full_path + glob_path_len, file_data.cFileName, file_name_len + 1);
+		full_path[glob_path_len] = '/';
+		memcpy(full_path + glob_path_len + 1, file_data.cFileName, file_name_len + 1);
 
 		arrput(glob, full_path);
 	}
 	while (FindNextFileA(file_handle, &file_data));
 #else
+	ls_plugs_glob_t glob = NULL;
+	ls_u32_t 		glob_path_len = strlen(glob_path);
+	char* 		  	path_pattern  = NULL;
+	ls_u32_t 		pattern_len   = strlen(pattern);
+
+	arrsetlen(path_pattern, glob_path_len + pattern_len + 1);
+
+	memcpy(path_pattern, glob_path, glob_path_len);
+	memcpy(path_pattern + glob_path_len, pattern, pattern_len + 1);
 
 	DIR* dir = opendir(glob_path);
 
