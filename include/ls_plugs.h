@@ -50,10 +50,13 @@ struct ls_plugs_outlet_s
 	void  	 (**plug_main_func_v)(ls_plugs_outlet_t*);
 };
 
+#ifndef LS_PLUGS_NO_SHORT_NAMES
+	#define outlet_t   		ls_plugs_outlet_t
+#endif
+
 #ifdef LS_PLUGS_IMPLEMENTATION
 
 #ifndef LS_PLUGS_NO_SHORT_NAMES
-	#define outlet_t   		ls_plugs_outlet_t
 	#define NEW_OUTLET 		LS_PLUGS_NEW_OUTLET
 	#define load_plugs 		ls_plugs_load_plugs
 	#define free_outlet		ls_plugs_free_outlet

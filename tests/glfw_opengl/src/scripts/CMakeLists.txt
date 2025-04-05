@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(SRC_DIR	    "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+set(GLFW_OPENGL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../include")
+
 set(PLUGS_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../../include")
 set(PLUGS_DEP_DIR	  "${CMAKE_CURRENT_SOURCE_DIR}/../../../../dependencies")
 
@@ -13,5 +15,5 @@ foreach(SCRIPT_SOURCE ${SCRIPTS_SOURCES})
 
 	add_library(${SCRIPT_NAME} SHARED ${SCRIPT_SOURCE})
 
-	target_include_directories(${SCRIPT_NAME} PRIVATE ${INCLUDE_DIR} ${PLUGS_INCLUDE_DIR} ${PLUGS_DEP_DIR})
+	target_include_directories(${SCRIPT_NAME} PRIVATE ${INCLUDE_DIR} ${PLUGS_INCLUDE_DIR} ${GLFW_OPENGL_INCLUDE_DIR} ${PLUGS_DEP_DIR})
 endforeach()
